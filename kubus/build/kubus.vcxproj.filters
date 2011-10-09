@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\src\block.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\world.cpp" />
+    <ClCompile Include="..\src\app.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app_render.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app_cleanup.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app_events.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app_init.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\app_loop.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\worldscene.cpp">
+      <Filter>Scenes\WorldScene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\block.h" />
+    <ClInclude Include="..\src\controller.h" />
+    <ClInclude Include="..\src\params.h" />
+    <ClInclude Include="..\src\world.h" />
+    <ClInclude Include="..\src\app.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\worldscene.h">
+      <Filter>Scenes\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\scene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="App">
+      <UniqueIdentifier>{ad25ad1a-99a9-4864-952a-56f8783abb7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{0cabcabd-fa51-4727-a897-796911cd74f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\WorldScene">
+      <UniqueIdentifier>{6bcb0c6c-3e79-475a-955c-2e945b86a037}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
