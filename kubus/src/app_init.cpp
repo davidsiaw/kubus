@@ -1,24 +1,9 @@
 #include "app.h"
 #include "params.h"
 
-bool App::OnInit()
-{
-    if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
-    {
-        return false;
-    }
 
-    SDL_WM_SetCaption("Kubus",NULL);
-
-    if((surfDisplay = SDL_SetVideoMode(screenWidth, screenHeight, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL )) == NULL)
-    {
-        return false;
-    }
-
-
-    glewInit();
-
-
+void Init3D(int screenWidth, int screenHeight) {
+	
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE,8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE,8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE,8);
@@ -58,6 +43,25 @@ bool App::OnInit()
 	//glEnable(0x81AB);
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+}
+
+bool App::OnInit()
+{
+    if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+    {
+        return false;
+    }
+
+    SDL_WM_SetCaption("Kubus",NULL);
+
+    if((surfDisplay = SDL_SetVideoMode(screenWidth, screenHeight, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL )) == NULL)
+    {
+        return false;
+    }
+
+    glewInit();
+
+	Init3D(screenWidth, screenHeight);
 
     return true;
 }

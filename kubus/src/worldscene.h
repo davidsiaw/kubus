@@ -28,7 +28,7 @@ class WorldScene : public Scene
 public:
     WorldScene();
     ~WorldScene();
-
+	virtual void OnInit();
     virtual void OnRender();
     virtual void OnEvent(SDL_Event* Event);
     virtual void OnLoop();

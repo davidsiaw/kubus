@@ -22,6 +22,10 @@ WorldScene::~WorldScene()
 {
 }
 
+void WorldScene::OnInit()
+{
+}
+
 #pragma pack(push,1)
 struct Vertex
 {

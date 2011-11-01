@@ -1,18 +1,26 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "worldscene.h"
+#include "vnscene.h"
 
 class Controller
 {
-    WorldScene* ws;
+	/* Scene declarations */
+    VNScene* ws;
+
 public:
     Controller(int , char**)
     :
-    ws(new WorldScene())
+	ws(new VNScene())
     {
     }
 
+	void Initialize() 
+	{
+		ws->OnInit();
+	}
+
+	/* Game state lies here */
     Scene* GetCurrentScene()
     {
         return ws;

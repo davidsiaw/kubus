@@ -17,6 +17,8 @@ int App::OnExecute()
         return -1;
     }
 
+	controller->Initialize();
+
     SDL_Event Event;
     while(running)
     {

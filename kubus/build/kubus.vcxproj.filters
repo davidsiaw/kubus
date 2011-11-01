@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\src\block.cpp" />
     <ClCompile Include="..\src\main.cpp" />
-    <ClCompile Include="..\src\world.cpp" />
     <ClCompile Include="..\src\app.cpp">
       <Filter>App</Filter>
     </ClCompile>
@@ -25,12 +23,22 @@
     <ClCompile Include="..\src\worldscene.cpp">
       <Filter>Scenes\WorldScene</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\block.cpp">
+      <Filter>Scenes\WorldScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\vnscene.cpp">
+      <Filter>Scenes\VNScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\world.cpp">
+      <Filter>Scenes\WorldScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\directoryresources.cpp">
+      <Filter>ResourceInterface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\block.h" />
     <ClInclude Include="..\src\controller.h" />
     <ClInclude Include="..\src\params.h" />
-    <ClInclude Include="..\src\world.h" />
     <ClInclude Include="..\src\app.h">
       <Filter>App</Filter>
     </ClInclude>
@@ -39,6 +47,21 @@
     </ClInclude>
     <ClInclude Include="..\src\scene.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\block.h">
+      <Filter>Scenes\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\vnscene.h">
+      <Filter>Scenes\VNScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\world.h">
+      <Filter>Scenes\WorldScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\resourcecontainer.h">
+      <Filter>ResourceInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\directoryresources.h">
+      <Filter>ResourceInterface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +73,12 @@
     </Filter>
     <Filter Include="Scenes\WorldScene">
       <UniqueIdentifier>{6bcb0c6c-3e79-475a-955c-2e945b86a037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\VNScene">
+      <UniqueIdentifier>{83237ee1-d5bd-4d73-91bf-71399bd84d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceInterface">
+      <UniqueIdentifier>{51a383ca-26e4-4fbb-85ea-31508ac9734f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
