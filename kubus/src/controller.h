@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 
 #include "vnscene.h"
+#include "worldscene.h"
 
 class Controller
 {

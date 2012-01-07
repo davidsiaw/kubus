@@ -20,6 +20,8 @@ void Init3D(int screenWidth, int screenHeight) {
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS,1);
     SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES,2);
 
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
     glClearColor(0, 0, 0, 0);
     glClearDepth(1.0f);
 
@@ -31,7 +33,7 @@ void Init3D(int screenWidth, int screenHeight) {
 
 	// Calculate The Aspect Ratio Of The Window
 	gluPerspective(60.0f,(GLfloat)screenWidth/(GLfloat)screenHeight,4.0f,10000.0f);
-
+	
 	glMatrixMode(GL_MODELVIEW);							// Select The Modelview Matrix
 	glLoadIdentity();									// Reset The Modelview Matrix
 
@@ -43,6 +45,11 @@ void Init3D(int screenWidth, int screenHeight) {
 	//glEnable(0x81AB);
 	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
+
+	glEnable (GL_ALPHA_TEST); 
+	glEnable (GL_BLEND); 
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 bool App::OnInit()

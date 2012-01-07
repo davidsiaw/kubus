@@ -8,6 +8,7 @@ LIBZ_SRC="http://zlib.net/zlib-1.2.5.tar.gz"
 LIBJPEG_SRC="http://downloads.sourceforge.net/project/libjpeg/libjpeg/6b/jpegsrc.v6b.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Flibjpeg%2Ffiles%2Flibjpeg%2F6b%2F&ts=1317540891&use_mirror=voxel"
 LIBFREETYPE_SRC="http://download.savannah.gnu.org/releases/freetype/freetype-2.1.10.tar.bz2"
 GLEW_SRC="http://downloads.sourceforge.net/project/glew/glew/1.7.0/glew-1.7.0.tgz?r=http%3A%2F%2Fglew.sourceforge.net%2F&ts=1317627466&use_mirror=superb-sea2"
+LUA_SRC="http://www.lua.org/ftp/lua-5.2.0.tar.gz"
 
 x86="../../x86/"
 
@@ -24,6 +25,7 @@ cd libs/sources
 #wget $LIBJPEG_SRC
 wget $LIBFREETYPE_SRC
 wget $GLEW_SRC
+wget $LUA_SRC
 
 tar xvf SDL-*.tar.gz
 tar xvf SDL_image*.tar.gz
@@ -33,3 +35,4 @@ tar xvf zlib-*.tar.xz
 tar xvf jpeg*.tar.gz
 tar xvf freetype*.tar.bz2
 tar xvf glew*.tgz
+tar xvf lua*.tgz

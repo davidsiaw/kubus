@@ -16,5 +16,6 @@ int main(int argc, char* argv[])
 
     Controller* c = new Controller(argc, argv);
     App theApp(c);
+
     return theApp.OnExecute();
 }

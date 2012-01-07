@@ -35,6 +35,12 @@
     <ClCompile Include="..\src\directoryresources.cpp">
       <Filter>ResourceInterface</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\primitives.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\graphicfuncs.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\controller.h" />
@@ -63,6 +69,36 @@
     <ClInclude Include="..\src\directoryresources.h">
       <Filter>ResourceInterface</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\primitives.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\array.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\quadcomposition.h">
+      <Filter>Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\vertexbuffer.h">
+      <Filter>Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\composition.h">
+      <Filter>Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\definitions.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\texturedquadcomposition.h">
+      <Filter>Composition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\rbsptree.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\graphicfuncs.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\multipletexturedquadcomposition.h">
+      <Filter>Composition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -79,6 +115,15 @@
     </Filter>
     <Filter Include="ResourceInterface">
       <UniqueIdentifier>{51a383ca-26e4-4fbb-85ea-31508ac9734f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitives">
+      <UniqueIdentifier>{c32d6f78-869e-41d8-87c5-de2ae1fbc318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Composition">
+      <UniqueIdentifier>{3016d4e5-a909-42e7-8019-b18ea5682751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{2d60b354-cc9b-4938-baf2-6c4d53d7bbb2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

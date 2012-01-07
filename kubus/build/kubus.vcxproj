@@ -27,19 +27,31 @@
     <ClCompile Include="..\src\app_render.cpp" />
     <ClCompile Include="..\src\block.cpp" />
     <ClCompile Include="..\src\directoryresources.cpp" />
+    <ClCompile Include="..\src\graphicfuncs.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\primitives.cpp" />
     <ClCompile Include="..\src\vnscene.cpp" />
     <ClCompile Include="..\src\world.cpp" />
     <ClCompile Include="..\src\worldscene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\app.h" />
+    <ClInclude Include="..\src\array.h" />
     <ClInclude Include="..\src\block.h" />
+    <ClInclude Include="..\src\composition.h" />
     <ClInclude Include="..\src\controller.h" />
+    <ClInclude Include="..\src\definitions.h" />
     <ClInclude Include="..\src\directoryresources.h" />
+    <ClInclude Include="..\src\graphicfuncs.h" />
+    <ClInclude Include="..\src\multipletexturedquadcomposition.h" />
     <ClInclude Include="..\src\params.h" />
+    <ClInclude Include="..\src\primitives.h" />
+    <ClInclude Include="..\src\quadcomposition.h" />
+    <ClInclude Include="..\src\rbsptree.h" />
     <ClInclude Include="..\src\resourcecontainer.h" />
     <ClInclude Include="..\src\scene.h" />
+    <ClInclude Include="..\src\texturedquadcomposition.h" />
+    <ClInclude Include="..\src\vertexbuffer.h" />
     <ClInclude Include="..\src\vnscene.h" />
     <ClInclude Include="..\src\world.h" />
     <ClInclude Include="..\src\worldscene.h" />
@@ -53,6 +65,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\libs\sources\libpng-1.5.5\projects\visualc71\libpng.vcxproj">
       <Project>{867ac197-332e-be97-297d-2d5ee95add6d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libs\sources\lua-5.2.0\lua.vcxproj">
+      <Project>{7cc1250b-0680-4bcc-aac8-92f5cf058816}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\libs\sources\SDL-1.2.14\VisualC\SDLmain\SDLmain.vcxproj">
       <Project>{da956fd3-e142-46f2-9dd5-c78bebb56b7a}</Project>
@@ -134,7 +149,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\gcc\libs\sources\SDL-1.2.14\include;D:\gcc\libs\sources\glew-1.7.0\include;D:\gcc\libs\sources\SDL_image-1.2.10;D:\gcc\libs\sources\boost_1_47_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\gcc\libs\sources\SDL-1.2.14\include;D:\gcc\libs\sources\glew-1.7.0\include;D:\gcc\libs\sources\SDL_image-1.2.10;D:\gcc\libs\sources\boost_1_47_0;D:\gcc\libs\sources\lua-5.2.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -2,8 +2,9 @@
 #define SCENE_H
 
 #include <sdl.h>
+#include "definitions.h"
 
-class Scene
+INTERFACE Scene
 {
 public:
         Scene() { }

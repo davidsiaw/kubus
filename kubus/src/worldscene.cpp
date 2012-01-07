@@ -1,9 +1,10 @@
 #include "worldscene.h"
 #include "params.h"
-
+#include "quadcomposition.h"
 
 #include <time.h>
 #include <math.h>
+
 
 WorldScene::WorldScene()
 :
@@ -11,7 +12,7 @@ Scene(),world(),
 eyeX(0), eyeY(0), eyeZ(16),
 centerX(0), centerY(1), centerZ(16),
 upX(0), upY(0), upZ(1),
-angle(0),dispList(0),vertAngle(0),
+angle(0),vbo(0),vertAngle(0),
 worldChanged(true),
 foX(sin(0.0)),foY(cos(0.0)),
 stX(sin(3.14159/2)),stY(cos(3.14159/2))
@@ -26,47 +27,14 @@ void WorldScene::OnInit()
 {
 }
 
-#pragma pack(push,1)
-struct Vertex
-{
-    GLfloat x,y,z;
-};
-
-struct Color
-{
-    uint8_t r,g,b,a;
-};
-
-struct Element
-{
-    Vertex v;
-    Color c;
-};
-
-struct Quad
-{
-    Element e[4];
-};
-
-struct Cube
-{
-    Quad quads[6];
-    Cube(int x, int y, int z)
-    {
-        // cube constructor
-    }
-};
-#pragma pack(pop)
-#define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
 void WorldScene::OnRender()
 {
     GLint error=0;
 
-        int size = 1024;
-        int numOfQuads = size*size;
-        int sizeInBytes = numOfQuads*sizeof(Quad);
-        srand(time(NULL));
+    int size = 1024;
+    int numOfQuads = size*size;
+    int sizeInBytes = numOfQuads*sizeof(Quad);
+    srand(time(NULL));
 
     if (worldChanged)
     {
@@ -100,39 +68,38 @@ void WorldScene::OnRender()
         }};
 
 
-        Quad* quads = (Quad*) malloc(sizeInBytes);
+        QuadComposition qc;
         for (int i=0;i<numOfQuads;i++)
         {
             int c = rand() % 256;
 
-            quads[i] = q;
-            quads[i].e[0].v.x += (i%size - size/2);
-            quads[i].e[0].v.y += (i/size - size/2);
-            quads[i].e[0].v.z += 0;
-            quads[i].e[0].c.g = c;
+			Quad thequad = q;
 
-            quads[i].e[1].v.x += (i%size - size/2);
-            quads[i].e[1].v.y += (i/size - size/2);
-            quads[i].e[1].v.z += 0;
-            quads[i].e[1].c.g = c;
+            thequad = q;
+            thequad.e[0].v.x += (i%size - size/2);
+            thequad.e[0].v.y += (i/size - size/2);
+            thequad.e[0].v.z += 0;
+            thequad.e[0].c.g = c;
 
-            quads[i].e[2].v.x += (i%size - size/2);
-            quads[i].e[2].v.y += (i/size - size/2);
-            quads[i].e[2].v.z += 0;
-            quads[i].e[2].c.g = c;
+            thequad.e[1].v.x += (i%size - size/2);
+            thequad.e[1].v.y += (i/size - size/2);
+            thequad.e[1].v.z += 0;
+            thequad.e[1].c.g = c;
 
-            quads[i].e[3].v.x += (i%size - size/2);
-            quads[i].e[3].v.y += (i/size - size/2);
-            quads[i].e[3].v.z += 0;
-            quads[i].e[3].c.g = c;
+            thequad.e[2].v.x += (i%size - size/2);
+            thequad.e[2].v.y += (i/size - size/2);
+            thequad.e[2].v.z += 0;
+            thequad.e[2].c.g = c;
+
+            thequad.e[3].v.x += (i%size - size/2);
+            thequad.e[3].v.y += (i/size - size/2);
+            thequad.e[3].v.z += 0;
+            thequad.e[3].c.g = c;
+
+			qc.Add(&thequad);
         }
 
-        glGenBuffers(1, &dispList);
-        glBindBuffer(GL_ARRAY_BUFFER, dispList);
-        glBufferData(GL_ARRAY_BUFFER, sizeInBytes, NULL, GL_STATIC_DRAW);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeInBytes, quads);
-
-        free(quads);
+		vbo = new VertexBuffer(&qc);
 
         worldChanged = false;
     }
@@ -152,19 +119,7 @@ void WorldScene::OnRender()
                upX, upY, upZ);
 
 
-    glBindBuffer(GL_ARRAY_BUFFER, dispList);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-
-    glVertexPointer(3, GL_FLOAT, sizeof(Element), BUFFER_OFFSET(0));
-    glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex)));
-
-    glBindBuffer(GL_ARRAY_BUFFER, dispList);
-    glDrawArrays(GL_QUADS, 0, numOfQuads * 4);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
+	vbo->Render();
 
     //glCallList(dispList);
 }

@@ -9,6 +9,8 @@
 #include "scene.h"
 #include "world.h"
 
+#include "vertexbuffer.h"
+
 class WorldScene : public Scene
 {
     World world;
@@ -17,7 +19,7 @@ class WorldScene : public Scene
     GLdouble upX, upY, upZ;
 
     GLdouble angle;
-    GLuint dispList;
+    VertexBuffer* vbo;
     double vertAngle;
 
     bool worldChanged;
