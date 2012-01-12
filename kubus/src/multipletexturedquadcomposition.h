@@ -64,15 +64,13 @@ public:
 		}
 	}
 
+
 	static int CompareSurfaceArea(const SDL_Surface** b, const SDL_Surface** a) 
 	{
-		// sorts from largest to smallest
-		if ((*a)->w - (*b)->w == 0)
-		{
-			return (*a)->h - (*b)->h;
-		}
+		int sizea = max((*a)->w, (*a)->h);
+		int sizeb = max((*b)->w, (*b)->h);
 
-		return (*a)->w - (*b)->w;
+		return sizea - sizeb;
 	}
 
 	static void SetSurface (FRectangle rect, SDL_Surface* data, MultipleTexturedQuadComposition* self)
@@ -81,10 +79,10 @@ public:
 
 		// print the texture on the supertexture
 		SDL_Rect r;
-		r.x = rect.x1;
-		r.y = rect.y1;
-		r.w = rect.x2-rect.x1;
-		r.h = rect.y2-rect.y1;
+		r.x = (Sint16)rect.x1;
+		r.y = (Sint16)rect.y1;
+		r.w = (Sint16)(rect.x2-rect.x1);
+		r.h = (Sint16)(rect.y2-rect.y1);
 		
 		SDL_SetAlpha(data, 0, SDL_ALPHA_OPAQUE);
 		SDL_BlitSurface(data, &data->clip_rect, self->texture, &r);
@@ -115,16 +113,13 @@ public:
 
 	void ArrangeLightMap()
 	{
-		int size = 256;
-
-
 		for(int size=256; size < 8192; size*=2)
 		{
 			FRectangle r;
 			r.x1 = 0;
-			r.x2 = size;
+			r.x2 = (float)size;
 			r.y1 = 0;
-			r.y2 = size;
+			r.y2 = (float)size;
 			
 			bool bigenough = true;
 			MTQRBSP* rbsp = new MTQRBSP(r);
@@ -135,9 +130,9 @@ public:
 			SDL_Surface* const* surfaceArray = surfaces.GetBuffer();
 
 			// Now insert
-			for(int i=0; i<surfaces.Count(); i++)
+			for(size_t i=0; i<surfaces.Count(); i++)
 			{
-				FRectangle rect = {0,0,surfaceArray[i]->w,surfaceArray[i]->h};
+				FRectangle rect = {0,0,(float)surfaceArray[i]->w,(float)surfaceArray[i]->h};
 				if ( !rbsp->Insert(rect, surfaceArray[i]) )
 				{
 					bigenough = false;

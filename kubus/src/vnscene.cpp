@@ -13,6 +13,8 @@ VNScene::~VNScene()
 {
 }
 
+
+
 void VNScene::OnInit() 
 {
 	SDL_Surface* haruna = resources->GetImage("misc\\haruna.png");
@@ -39,22 +41,22 @@ void VNScene::OnInit()
 
 	vbo = new VertexBuffer(&tqc);
 
-	tqc.DebugDumpLightMap("D:\\gcc\\kubus\\res\\misc\\a.bmp");
+	//tqc.DebugDumpLightMap("D:\\gcc\\kubus\\res\\misc\\a.bmp");
 }
 
 void VNScene::OnRender() 
 {
+	static int a = 0;
+
 	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glEnable2D();
 
-	glPushMatrix();
-	glTranslatef(50,50,0);
+	a++;
+	a = a % 200;
 
-	vbo->Render();
-
-	glPopMatrix();
+	vbo->Render(1, ((float)a/200.0f));
 
 	glDisable2D();
 }

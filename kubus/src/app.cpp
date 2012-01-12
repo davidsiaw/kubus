@@ -23,7 +23,7 @@ int App::OnExecute()
     while(running)
     {
         Scene* scene = controller->GetCurrentScene();
-        while(SDL_PollEvent(&Event))
+        if(SDL_PollEvent(&Event))
         {
             OnEvent(scene, &Event);
         }

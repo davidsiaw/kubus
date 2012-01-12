@@ -25,6 +25,12 @@ struct Element
 	Vertex v;
 	Color c;
 	TexCoord t;
+	float mark;
+};
+
+struct Triangle
+{
+    Element e[3];
 };
 
 struct Quad

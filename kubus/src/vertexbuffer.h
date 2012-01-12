@@ -10,6 +10,7 @@
 
 class VertexBuffer
 {
+	// The vertex buffer and info
 	GLuint buffer;
 	size_t buffer_size;
 
@@ -17,8 +18,107 @@ class VertexBuffer
 	GLuint object_count;
 	GLuint elements_per_object;
 
+	// Texture information
 	bool uses_texture;
 	GLuint texture;
+
+	// Shader information
+	GLuint shader;
+
+	GLint aPosition;
+	GLint aTexCoord;
+	GLint aColor;
+	GLint aMark;
+
+	GLint uHasTexture;
+	GLint uTexture;
+	GLint uTransparency;
+	GLint uActiveMark;
+	
+	static GLuint SetUpShader()
+	{
+		const char* vertexshader =
+			"attribute vec3 aPosition;"
+			"attribute vec2 aTexCoord;"
+			"attribute vec4 aColor;"
+			"attribute float aMark;"
+			
+			"varying vec2 vTexCoord;"
+			"varying vec4 vColor;"
+			"varying float vMark;"
+
+			"void main()"
+			"{"
+				// Transforming The Vertex
+			"	gl_Position = gl_ModelViewProjectionMatrix * vec4(aPosition, 1.0);"
+
+				// Pass the rest to fragment shader
+			"	vTexCoord = aTexCoord;"
+			"	vColor = aColor;"
+			"	vMark = aMark;"
+			"}"
+		;
+
+		const char* fragmentshader =
+			"varying vec2 vTexCoord;"
+			"varying vec4 vColor;"
+			"varying float vMark;"
+			
+			"uniform float uHasTexture;"
+			"uniform sampler2D uTexture;"
+			"uniform float uTransparency;"
+			"uniform float uActiveMark;"
+
+			"void main()"
+			"{"
+			"	vec4 color = (1.0 - uHasTexture) * vColor;"
+			"	vec4 texcolor = uHasTexture * texture2D(uTexture, vTexCoord);"
+			"	gl_FragColor = color + texcolor;"
+			"	gl_FragColor.a *= uTransparency;"
+
+			"	bool isActive = vMark == uActiveMark;"
+			"	gl_FragColor.a *= float(isActive);"
+			"}"
+		;
+
+		GLuint vshader = glCreateShader(GL_VERTEX_SHADER);
+		GLuint fshader = glCreateShader(GL_FRAGMENT_SHADER);
+
+		glShaderSource(vshader, 1, &vertexshader, NULL);
+		glShaderSource(fshader, 1, &fragmentshader, NULL);
+		
+		printf("Compiling Vertex Shader...\n");
+		glCompileShader(vshader);
+		printShaderInfoLog(vshader);
+
+		printf("Compiling Fragment Shader...\n");
+		glCompileShader(fshader);
+		printShaderInfoLog(fshader);
+
+		GLuint prog = glCreateProgram();
+		glAttachShader(prog, fshader);
+		glAttachShader(prog, vshader);
+
+		glLinkProgram(prog);
+
+		return prog;
+	}
+
+	static void printShaderInfoLog(GLuint obj)
+	{
+		int infologLength = 0;
+		int charsWritten  = 0;
+		char *infoLog;
+
+		glGetShaderiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+		if (infologLength > 0)
+		{
+			infoLog = (char *)malloc(infologLength);
+			glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
+			printf("%s\n",infoLog);
+			free(infoLog);
+		}
+	}
 
 public:
 	VertexBuffer(Composition* composition)
@@ -36,7 +136,7 @@ public:
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
 		
-			glTexImage2D(GL_TEXTURE_2D, 0, 4, tex->w, tex->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, tex->pixels);
+			glTexImage2D(GL_TEXTURE_2D, 0, 4, tex->w, tex->h, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, tex->pixels);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -47,56 +147,20 @@ public:
         glBufferData(GL_ARRAY_BUFFER, buffer_size, NULL, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, buffer_size, composition->Buffer());
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		shader = SetUpShader();
+
+		aPosition = glGetAttribLocation(shader, "aPosition");
+		aTexCoord = glGetAttribLocation(shader, "aTexCoord");
+		aColor = glGetAttribLocation(shader, "aColor");
+		aMark = glGetAttribLocation(shader, "aMark");
+		
+		uHasTexture = glGetUniformLocation(shader, "uHasTexture");
+		uTexture = glGetUniformLocation(shader, "uTexture");
+		uTransparency = glGetUniformLocation(shader, "uTransparency");
+		uActiveMark = glGetUniformLocation(shader, "uActiveMark");
 	}
-
-	void Render()
-	{
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		
-		if (uses_texture)
-		{
-			glEnable(GL_TEXTURE_2D);
-			glClientActiveTexture(GL_TEXTURE0);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		}
-		else
-		{
-			glEnableClientState(GL_COLOR_ARRAY);
-		}
-
-
-		glVertexPointer(3, GL_FLOAT, sizeof(Element), BUFFER_OFFSET(0));
-		if (uses_texture)
-		{
-			glTexCoordPointer(2, GL_FLOAT, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color)));
-		}
-		else
-		{
-			glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex)));
-		}
-		
-
-		glDrawArrays(type, 0, object_count * elements_per_object);
-		
-
-		glDisableClientState(GL_VERTEX_ARRAY);
-
-		if (uses_texture)
-		{
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glDisable(GL_TEXTURE_2D);
-		}
-		else
-		{
-			glDisableClientState(GL_COLOR_ARRAY);
-		}
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
+	
 	~VertexBuffer()
 	{
         glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -104,6 +168,42 @@ public:
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(1, &buffer);
 		glDeleteTextures(1, &texture);
+		glDeleteProgram(shader);
+	}
+
+	void Render(int activeMark = 1, float transparency = 1.0f)
+	{
+		glUseProgram(shader);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		
+		glEnableVertexAttribArray(aPosition);
+		glEnableVertexAttribArray(aTexCoord);
+		glEnableVertexAttribArray(aColor);
+		glEnableVertexAttribArray(aMark);
+		
+		glUniform1f(uTransparency, transparency);
+		glUniform1f(uHasTexture, uses_texture ? 1.0f : 0.0f);
+		glUniform1i(uTexture, 0);
+		glUniform1f(uActiveMark, (float)activeMark);
+
+		glVertexAttribPointer(aPosition, 3, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(0));
+		glVertexAttribPointer(aColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Element),  BUFFER_OFFSET(sizeof(Vertex)));
+		glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color)));
+		glVertexAttribPointer(aMark, 1, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color) + sizeof(TexCoord)));
+		
+		glDrawArrays(type, 0, object_count * elements_per_object);
+
+		glDisableVertexAttribArray(aPosition);
+		glDisableVertexAttribArray(aTexCoord);
+		glDisableVertexAttribArray(aColor);
+		glDisableVertexAttribArray(aMark);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 };
 
