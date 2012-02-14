@@ -21,16 +21,16 @@
       <Filter>App</Filter>
     </ClCompile>
     <ClCompile Include="..\src\worldscene.cpp">
-      <Filter>Scenes\WorldScene</Filter>
+      <Filter>Scenes\TestScenes\WorldScene</Filter>
     </ClCompile>
     <ClCompile Include="..\src\block.cpp">
-      <Filter>Scenes\WorldScene</Filter>
+      <Filter>Scenes\TestScenes\WorldScene</Filter>
     </ClCompile>
     <ClCompile Include="..\src\vnscene.cpp">
-      <Filter>Scenes\VNScene</Filter>
+      <Filter>Scenes\TestScenes\VNScene</Filter>
     </ClCompile>
     <ClCompile Include="..\src\world.cpp">
-      <Filter>Scenes\WorldScene</Filter>
+      <Filter>Scenes\TestScenes\WorldScene</Filter>
     </ClCompile>
     <ClCompile Include="..\src\directoryresources.cpp">
       <Filter>ResourceInterface</Filter>
@@ -41,6 +41,18 @@
     <ClCompile Include="..\src\graphicfuncs.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\intermissionscene.cpp">
+      <Filter>Scenes\IntermissionScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\script.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\module_game.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\scriptdata.h">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\controller.h" />
@@ -49,19 +61,19 @@
       <Filter>App</Filter>
     </ClInclude>
     <ClInclude Include="..\src\worldscene.h">
-      <Filter>Scenes\WorldScene</Filter>
+      <Filter>Scenes\TestScenes\WorldScene</Filter>
     </ClInclude>
     <ClInclude Include="..\src\scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\src\block.h">
-      <Filter>Scenes\WorldScene</Filter>
+      <Filter>Scenes\TestScenes\WorldScene</Filter>
     </ClInclude>
     <ClInclude Include="..\src\vnscene.h">
-      <Filter>Scenes\VNScene</Filter>
+      <Filter>Scenes\TestScenes\VNScene</Filter>
     </ClInclude>
     <ClInclude Include="..\src\world.h">
-      <Filter>Scenes\WorldScene</Filter>
+      <Filter>Scenes\TestScenes\WorldScene</Filter>
     </ClInclude>
     <ClInclude Include="..\src\resourcecontainer.h">
       <Filter>ResourceInterface</Filter>
@@ -99,6 +111,15 @@
     <ClInclude Include="..\src\vertexbuffer.h">
       <Filter>Composition2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\intermissionscene.h">
+      <Filter>Scenes\IntermissionScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\script.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\module_game.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -106,12 +127,6 @@
     </Filter>
     <Filter Include="Scenes">
       <UniqueIdentifier>{0cabcabd-fa51-4727-a897-796911cd74f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\WorldScene">
-      <UniqueIdentifier>{6bcb0c6c-3e79-475a-955c-2e945b86a037}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\VNScene">
-      <UniqueIdentifier>{83237ee1-d5bd-4d73-91bf-71399bd84d7e}</UniqueIdentifier>
     </Filter>
     <Filter Include="ResourceInterface">
       <UniqueIdentifier>{51a383ca-26e4-4fbb-85ea-31508ac9734f}</UniqueIdentifier>
@@ -124,6 +139,21 @@
     </Filter>
     <Filter Include="Composition2D">
       <UniqueIdentifier>{3016d4e5-a909-42e7-8019-b18ea5682751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\TestScenes">
+      <UniqueIdentifier>{20f67a59-c5a9-4206-a283-0e7fde1ccf0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\TestScenes\VNScene">
+      <UniqueIdentifier>{83237ee1-d5bd-4d73-91bf-71399bd84d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\TestScenes\WorldScene">
+      <UniqueIdentifier>{6bcb0c6c-3e79-475a-955c-2e945b86a037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\IntermissionScene">
+      <UniqueIdentifier>{c0f6d705-f79c-4f3c-bd08-4261d1ef74fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{b81f8281-ceb0-4bac-9d8a-c6e48d62212c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

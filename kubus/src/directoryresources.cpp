@@ -20,3 +20,19 @@ SDL_Surface* DirectoryResources::GetImage(std::string filename)
 	}
 	return images[filename];
 }
+
+std::string DirectoryResources::GetTextfile(std::string filename)
+{
+	FILE* fp = fopen((path + filename).c_str(), "rb");
+	fseek(fp, 0, SEEK_END);
+	long size = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+	char* text = new char[size + 1];
+	fread(text, 1, size, fp);
+	text[size] = 0;
+	std::string res = text;
+	delete[] text;
+	fclose(fp);
+	return res;
+}
+

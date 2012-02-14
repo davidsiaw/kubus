@@ -28,8 +28,12 @@
     <ClCompile Include="..\src\block.cpp" />
     <ClCompile Include="..\src\directoryresources.cpp" />
     <ClCompile Include="..\src\graphicfuncs.cpp" />
+    <ClCompile Include="..\src\intermissionscene.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\module_game.cpp" />
     <ClCompile Include="..\src\primitives.cpp" />
+    <ClCompile Include="..\src\script.cpp" />
+    <ClCompile Include="..\src\scriptdata.h" />
     <ClCompile Include="..\src\vnscene.cpp" />
     <ClCompile Include="..\src\world.cpp" />
     <ClCompile Include="..\src\worldscene.cpp" />
@@ -43,6 +47,8 @@
     <ClInclude Include="..\src\definitions.h" />
     <ClInclude Include="..\src\directoryresources.h" />
     <ClInclude Include="..\src\graphicfuncs.h" />
+    <ClInclude Include="..\src\intermissionscene.h" />
+    <ClInclude Include="..\src\module_game.h" />
     <ClInclude Include="..\src\multipletexturedquadcomposition.h" />
     <ClInclude Include="..\src\params.h" />
     <ClInclude Include="..\src\primitives.h" />
@@ -50,6 +56,7 @@
     <ClInclude Include="..\src\rbsptree.h" />
     <ClInclude Include="..\src\resourcecontainer.h" />
     <ClInclude Include="..\src\scene.h" />
+    <ClInclude Include="..\src\script.h" />
     <ClInclude Include="..\src\texturedquadcomposition.h" />
     <ClInclude Include="..\src\vertexbuffer.h" />
     <ClInclude Include="..\src\vnscene.h" />

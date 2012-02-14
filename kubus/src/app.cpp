@@ -23,6 +23,11 @@ int App::OnExecute()
     while(running)
     {
         Scene* scene = controller->GetCurrentScene();
+		if (scene == NULL)
+		{
+			break;
+		}
+
         if(SDL_PollEvent(&Event))
         {
             OnEvent(scene, &Event);
