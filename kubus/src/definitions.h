@@ -11,7 +11,4 @@
 // define to mark that we are implementing an interface
 #define IMPLEMENTS public
 
-#define max(a,b) ((a > b) ? a : b)
-#define min(a,b) ((a < b) ? a : b)
-
 #endif // DEFINITIONS_H

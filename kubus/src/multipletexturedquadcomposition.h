@@ -4,170 +4,79 @@
 #include "primitives.h"
 #include "array.h"
 #include "composition.h"
-#include "rbsptree.h"
-
 #include <map>
-
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-#define rmask 0xff000000
-#define gmask 0x00ff0000
-#define bmask 0x0000ff00
-#define amask 0x000000ff
-#else
-#define rmask 0x000000ff
-#define gmask 0x0000ff00
-#define bmask 0x00ff0000
-#define amask 0xff000000
-#endif
+#include "supertexture.h"
 
 class MultipleTexturedQuadComposition : IMPLEMENTS Composition
 {
-
-	typedef std::map<SDL_Surface*, Array<size_t>*> qmap;
-	typedef RBSPNode<SDL_Surface*, MultipleTexturedQuadComposition*> MTQRBSP;
+	typedef std::map<SDL_Surface*, std::vector<size_t>> qmap;
 	
 	qmap surfToQuadMap;
-	Array<Quad> quads;
-	Array<SDL_Surface*> surfaces;
-	SDL_Surface* texture;
+	std::vector<Quad> quads;
+	std::vector<SDL_Surface*> surfaces;
+	SuperTextureInfo texture;
+	SuperTexture supertexturer;
 
 public:
 	MultipleTexturedQuadComposition()
 	{
-		texture = NULL;
 	}
 	
 	~MultipleTexturedQuadComposition()
 	{
-		if (texture != NULL)
-		{
-			SDL_FreeSurface(texture);
-		}
 	}
 
 	void Add(Quad* q, SDL_Surface* img)
 	{
-		quads.Insert(*q);
+		quads.push_back(*q);
 
 		if (surfToQuadMap.find(img) == surfToQuadMap.end())
 		{
-			surfaces.Insert(img);
-			surfToQuadMap[img] = new Array<size_t>();
+			surfaces.push_back(img);
 		}
-		surfToQuadMap[img]->Insert(quads.Count()-1);
-		
-		// a texture's nullness shows it has changed
-		if (texture != NULL)
-		{
-			SDL_FreeSurface(texture);
-			texture = NULL;
-		}
-	}
+		surfToQuadMap[img].push_back(quads.size()-1);
 
-
-	static int CompareSurfaceArea(const SDL_Surface** b, const SDL_Surface** a) 
-	{
-		int sizea = max((*a)->w, (*a)->h);
-		int sizeb = max((*b)->w, (*b)->h);
-
-		return sizea - sizeb;
-	}
-
-	static void SetSurface (FRectangle rect, SDL_Surface* data, MultipleTexturedQuadComposition* self)
-	{
-		int size = self->texture->w;
-
-		// print the texture on the supertexture
-		SDL_Rect r;
-		r.x = (Sint16)rect.x1;
-		r.y = (Sint16)rect.y1;
-		r.w = (Sint16)(rect.x2-rect.x1);
-		r.h = (Sint16)(rect.y2-rect.y1);
-		
-		SDL_SetAlpha(data, 0, SDL_ALPHA_OPAQUE);
-		SDL_BlitSurface(data, &data->clip_rect, self->texture, &r);
-
-		// update the texcoords
-		const size_t* indexes = self->surfToQuadMap[data]->GetBuffer();
-		size_t count = self->surfToQuadMap[data]->Count();
-		Quad* quads = (Quad*)self->quads.GetBuffer();
-		
-		for (size_t i=0; i<count; i++)
-		{
-			quads[indexes[i]].e[0].t.x = rect.x1/size;
-			quads[indexes[i]].e[0].t.y = rect.y2/size;
-
-			quads[indexes[i]].e[1].t.x = rect.x2/size;
-			quads[indexes[i]].e[1].t.y = rect.y2/size;
-
-			quads[indexes[i]].e[2].t.x = rect.x2/size;
-			quads[indexes[i]].e[2].t.y = rect.y1/size;
-
-			quads[indexes[i]].e[3].t.x = rect.x1/size;
-			quads[indexes[i]].e[3].t.y = rect.y1/size;
-		}
-
+		supertexturer.Add(img);
 	}
 
 	class TooManyImagesException{};
 
 	void ArrangeLightMap()
 	{
-		for(int size=256; size < 8192; size*=2)
-		{
-			FRectangle r;
-			r.x1 = 0;
-			r.x2 = (float)size;
-			r.y1 = 0;
-			r.y2 = (float)size;
-			
-			bool bigenough = true;
-			MTQRBSP* rbsp = new MTQRBSP(r);
-			
-			// First sort by size
-			surfaces.Sort((Array<SDL_Surface*>::comparer)CompareSurfaceArea);
+		texture = supertexturer.CreateSuperTexture();
 
-			SDL_Surface* const* surfaceArray = surfaces.GetBuffer();
+		SuperTextureInfo tex = texture;
+		std::vector<Quad>& quads = this->quads;
 
-			// Now insert
-			for(size_t i=0; i<surfaces.Count(); i++)
+		std::for_each(surfToQuadMap.begin(), surfToQuadMap.end(), 
+			[&](std::pair<SDL_Surface*, std::vector<size_t>> kvpair)
 			{
-				FRectangle rect = {0,0,(float)surfaceArray[i]->w,(float)surfaceArray[i]->h};
-				if ( !rbsp->Insert(rect, surfaceArray[i]) )
-				{
-					bigenough = false;
-					break;
-				}
-			}
+				auto coords = tex[kvpair.first];
+				std::vector<Quad>& thisquads = quads;
 
-			if(bigenough)
-			{
-				texture = SDL_CreateRGBSurface(
-					SDL_HWSURFACE | SDL_SRCALPHA, size, size, 32,
-					rmask, gmask, bmask, amask);
-
-				rbsp->RetrieveRectangles(SetSurface, this);
-				delete rbsp;
-				return;
-			}
-		}
-
-		throw TooManyImagesException();
+				std::for_each(kvpair.second.begin(), kvpair.second.end(), 
+					[&](size_t index)
+					{
+						for (int i=0;i<4;i++) {
+							thisquads[index].e[i].t = coords[i];
+						}
+					});
+			});
 	}
 	
 	virtual void* Buffer()
 	{	
-		if (texture == NULL)
+		if (texture.GetSuperTextureSurface() == NULL)
 		{
 			ArrangeLightMap();
 		}
 
-		return (void*)quads.GetBuffer();
+		return &quads[0];
 	}
 
 	virtual size_t BufferSizeInBytes() const
 	{
-		return quads.Count() * sizeof(Quad);
+		return quads.size() * sizeof(Quad);
 	}
 
 	virtual GLenum PrimitiveType() const
@@ -177,7 +86,7 @@ public:
 
 	virtual GLuint ObjectCount() const
 	{
-		return quads.Count();
+		return quads.size();
 	}
 
 	virtual GLuint ElementsPerObject() const
@@ -192,17 +101,17 @@ public:
 	
 	virtual SDL_Surface* Texture()
 	{
-		if (texture == NULL)
+		if (texture.GetSuperTextureSurface() == NULL)
 		{
 			ArrangeLightMap();
 		}
 
-		return texture;
+		return texture.GetSuperTextureSurface();
 	}
 
 	void DebugDumpLightMap(const char* file)
 	{
-		SDL_SaveBMP(texture, file);
+		SDL_SaveBMP(texture.GetSuperTextureSurface(), file);
 	}
 
 };

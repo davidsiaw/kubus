@@ -1,6 +1,7 @@
 #include "app.h"
 #include "params.h"
 
+#include <SDL_ttf.h>
 
 void Init3D(int screenWidth, int screenHeight) {
 	
@@ -54,6 +55,11 @@ void Init3D(int screenWidth, int screenHeight) {
 
 bool App::OnInit()
 {
+	if(TTF_Init() == -1) {
+		printf("TTF_Init: %s\n", TTF_GetError());
+        return false;
+	}
+		
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         return false;

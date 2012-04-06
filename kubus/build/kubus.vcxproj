@@ -34,6 +34,7 @@
     <ClCompile Include="..\src\primitives.cpp" />
     <ClCompile Include="..\src\script.cpp" />
     <ClCompile Include="..\src\scriptdata.h" />
+    <ClCompile Include="..\src\textscene.cpp" />
     <ClCompile Include="..\src\vnscene.cpp" />
     <ClCompile Include="..\src\world.cpp" />
     <ClCompile Include="..\src\worldscene.cpp" />
@@ -57,6 +58,8 @@
     <ClInclude Include="..\src\resourcecontainer.h" />
     <ClInclude Include="..\src\scene.h" />
     <ClInclude Include="..\src\script.h" />
+    <ClInclude Include="..\src\supertexture.h" />
+    <ClInclude Include="..\src\textscene.h" />
     <ClInclude Include="..\src\texturedquadcomposition.h" />
     <ClInclude Include="..\src\vertexbuffer.h" />
     <ClInclude Include="..\src\vnscene.h" />
@@ -172,7 +175,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;GLEW_STATIC;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\gcc\libs\sources\SDL-1.2.14\include;D:\gcc\libs\sources\glew-1.7.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\gcc\libs\sources\SDL-1.2.14\include;D:\gcc\libs\sources\glew-1.7.0\include;D:\gcc\libs\sources\SDL_image-1.2.10;D:\gcc\libs\sources\boost_1_47_0;D:\gcc\libs\sources\lua-5.2.0\src;D:\gcc\libs\sources\SDL_ttf-2.0.10;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

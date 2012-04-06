@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include "GL/glew.h"
+#include <algorithm>
 
 #pragma pack(push,1)
 struct Vertex
@@ -25,7 +26,8 @@ struct Element
 	Vertex v;
 	Color c;
 	TexCoord t;
-	float mark;
+	float tileOffset;	// The width of each tile
+	float numtiles;		// Number of tiles in texture
 };
 
 struct Triangle
@@ -41,6 +43,6 @@ struct Quad
 #pragma pack(pop)
 
 Quad MakeXYPlaneQuad(float x, float y, float width, float height);
-
+std::pair<Triangle, Triangle> QuadToTriangle(Quad q);
 
 #endif

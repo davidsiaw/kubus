@@ -53,6 +53,9 @@
     <ClCompile Include="..\src\scriptdata.h">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\textscene.cpp">
+      <Filter>Scenes\TextScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\controller.h" />
@@ -105,9 +108,6 @@
     <ClInclude Include="..\src\quadcomposition.h">
       <Filter>Composition2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\texturedquadcomposition.h">
-      <Filter>Composition2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\vertexbuffer.h">
       <Filter>Composition2D</Filter>
     </ClInclude>
@@ -119,6 +119,15 @@
     </ClInclude>
     <ClInclude Include="..\src\module_game.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\textscene.h">
+      <Filter>Scenes\TextScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\supertexture.h">
+      <Filter>Composition2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\texturedquadcomposition.h">
+      <Filter>Composition2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +163,9 @@
     </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{b81f8281-ceb0-4bac-9d8a-c6e48d62212c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\TextScene">
+      <UniqueIdentifier>{b4265346-f5de-44cc-b982-62de595bbf84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

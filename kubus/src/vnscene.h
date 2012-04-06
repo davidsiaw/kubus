@@ -21,6 +21,7 @@ public:
     virtual void OnRender();
     virtual void OnEvent(SDL_Event* Event);
     virtual void OnLoop();
+	virtual bool IsComplete();
 };
 
 #endif // VNSCENE_H

@@ -1,10 +1,11 @@
 #ifndef SCRIPTDATA_H
 #define SCRIPTDATA_H
 
+#include "SDL.h"
+#include "intermissionscene.h"
+
 // List the types you will pass around here
 // DO NOT include the h files
-struct SDL_Surface;
-class IntermissionScene;
 
 enum DataType
 {

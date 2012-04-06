@@ -13,8 +13,6 @@ VNScene::~VNScene()
 {
 }
 
-
-
 void VNScene::OnInit() 
 {
 	SDL_Surface* haruna = resources->GetImage("misc\\haruna.png");
@@ -48,7 +46,6 @@ void VNScene::OnRender()
 {
 	static int a = 0;
 
-	glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
 	glEnable2D();
@@ -56,7 +53,7 @@ void VNScene::OnRender()
 	a++;
 	a = a % 200;
 
-	vbo->Render(1, ((float)a/200.0f));
+	vbo->Render(((a%20)/10) + 1, ((float)a/200.0f));
 
 	glDisable2D();
 }
@@ -70,4 +67,9 @@ void VNScene::OnEvent(SDL_Event* Event)
 void VNScene::OnLoop()
 {
 
+}
+
+bool VNScene::IsComplete()
+{
+	return false;
 }

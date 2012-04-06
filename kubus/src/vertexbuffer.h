@@ -28,12 +28,13 @@ class VertexBuffer
 	GLint aPosition;
 	GLint aTexCoord;
 	GLint aColor;
-	GLint aMark;
+	GLint aTile;
+	GLint aTileNum;
 
 	GLint uHasTexture;
 	GLint uTexture;
 	GLint uTransparency;
-	GLint uActiveMark;
+	GLint uActiveTile;
 	
 	static GLuint SetUpShader()
 	{
@@ -41,11 +42,13 @@ class VertexBuffer
 			"attribute vec3 aPosition;"
 			"attribute vec2 aTexCoord;"
 			"attribute vec4 aColor;"
-			"attribute float aMark;"
+			"attribute float aTile;"
+			"attribute float aTileNum;"
 			
 			"varying vec2 vTexCoord;"
 			"varying vec4 vColor;"
-			"varying float vMark;"
+
+			"uniform float uActiveTile;"
 
 			"void main()"
 			"{"
@@ -55,19 +58,17 @@ class VertexBuffer
 				// Pass the rest to fragment shader
 			"	vTexCoord = aTexCoord;"
 			"	vColor = aColor;"
-			"	vMark = aMark;"
+			"	vTexCoord.x += mod(uActiveTile, aTileNum) * aTile;"
 			"}"
 		;
 
 		const char* fragmentshader =
 			"varying vec2 vTexCoord;"
 			"varying vec4 vColor;"
-			"varying float vMark;"
 			
 			"uniform float uHasTexture;"
 			"uniform sampler2D uTexture;"
 			"uniform float uTransparency;"
-			"uniform float uActiveMark;"
 
 			"void main()"
 			"{"
@@ -75,9 +76,6 @@ class VertexBuffer
 			"	vec4 texcolor = uHasTexture * texture2D(uTexture, vTexCoord);"
 			"	gl_FragColor = color + texcolor;"
 			"	gl_FragColor.a *= uTransparency;"
-
-			"	bool isActive = vMark == uActiveMark;"
-			"	gl_FragColor.a *= float(isActive);"
 			"}"
 		;
 
@@ -153,12 +151,13 @@ public:
 		aPosition = glGetAttribLocation(shader, "aPosition");
 		aTexCoord = glGetAttribLocation(shader, "aTexCoord");
 		aColor = glGetAttribLocation(shader, "aColor");
-		aMark = glGetAttribLocation(shader, "aMark");
+		aTile = glGetAttribLocation(shader, "aTile");
+		aTileNum = glGetAttribLocation(shader, "aTileNum");
 		
+		uActiveTile = glGetUniformLocation(shader, "uActiveTile");
 		uHasTexture = glGetUniformLocation(shader, "uHasTexture");
 		uTexture = glGetUniformLocation(shader, "uTexture");
 		uTransparency = glGetUniformLocation(shader, "uTransparency");
-		uActiveMark = glGetUniformLocation(shader, "uActiveMark");
 	}
 	
 	~VertexBuffer()
@@ -171,7 +170,7 @@ public:
 		glDeleteProgram(shader);
 	}
 
-	void Render(int activeMark = 1, float transparency = 1.0f)
+	void Render(int tile = 0, float transparency = 1.0f)
 	{
 		glUseProgram(shader);
 
@@ -183,24 +182,27 @@ public:
 		glEnableVertexAttribArray(aPosition);
 		glEnableVertexAttribArray(aTexCoord);
 		glEnableVertexAttribArray(aColor);
-		glEnableVertexAttribArray(aMark);
+		glEnableVertexAttribArray(aTile);
+		glEnableVertexAttribArray(aTileNum);
 		
 		glUniform1f(uTransparency, transparency);
 		glUniform1f(uHasTexture, uses_texture ? 1.0f : 0.0f);
 		glUniform1i(uTexture, 0);
-		glUniform1f(uActiveMark, (float)activeMark);
+		glUniform1f(uActiveTile, (float)tile);
 
 		glVertexAttribPointer(aPosition, 3, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(0));
 		glVertexAttribPointer(aColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Element),  BUFFER_OFFSET(sizeof(Vertex)));
 		glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color)));
-		glVertexAttribPointer(aMark, 1, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color) + sizeof(TexCoord)));
+		glVertexAttribPointer(aTile, 1, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color) + sizeof(TexCoord)));
+		glVertexAttribPointer(aTileNum, 1, GL_FLOAT, GL_FALSE, sizeof(Element), BUFFER_OFFSET(sizeof(Vertex) + sizeof(Color) + sizeof(TexCoord) + sizeof(float)));
 		
 		glDrawArrays(type, 0, object_count * elements_per_object);
 
 		glDisableVertexAttribArray(aPosition);
 		glDisableVertexAttribArray(aTexCoord);
 		glDisableVertexAttribArray(aColor);
-		glDisableVertexAttribArray(aMark);
+		glDisableVertexAttribArray(aTile);
+		glEnableVertexAttribArray(aTileNum);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
