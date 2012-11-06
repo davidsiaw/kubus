@@ -151,12 +151,12 @@ namespace tilemapmaker
             {
                 Tile autotile = selectedBasicTile;
                 AutoTile12 at = new AutoTile12();
-                AddAutotile(autotile, at);
+                AddAutotile12(autotile, at);
 
             }
         }
 
-        private void AddAutotile(Tile autotile, AutoTile12 at)
+        private void AddAutotile12(Tile autotile, AutoTile12 at)
         {
 
             RadioButton btn = new RadioButton();
@@ -186,51 +186,58 @@ namespace tilemapmaker
             flow_tiles.Controls.Add(btn);
         }
 
-        void autoTile_Click(object sender, EventArgs e)
+        void autoTile94_Click(object sender, EventArgs e)
         {
             if (selectedBasicTile != null)
             {
-                RadioButton btn = new RadioButton();
-                btn.Appearance = Appearance.Button;
-                btn.Size = new System.Drawing.Size(40, 40);
-                btn.Image = selectedBasicTile.GetBitmap(0, 0);
-
-                int t = Tile.tilesize;
-                var nine = new Bitmap(t * 3, t * 3);
-                var four = new Bitmap(t * 2, t * 2);
-                using (Graphics g = Graphics.FromImage(nine))
-                {
-                    for (int x = 0; x < 3; x++)
-                    {
-                        for (int y = 0; y < 3; y++)
-                        {
-                            g.DrawImage(selectedBasicTile.GetBitmap(0, 0), t * x, t * y);
-                        }
-                    }
-                }
-
-                using (Graphics g = Graphics.FromImage(four))
-                {
-                    for (int x = 0; x < 2; x++)
-                    {
-                        for (int y = 0; y < 2; y++)
-                        {
-                            g.DrawImage(selectedBasicTile.GetBitmap(0, 0), t * x, t * y);
-                        }
-                    }
-                }
-
+                Tile autotile = selectedBasicTile;
                 AutoTile94 at = new AutoTile94();
-
-                btn.Tag = at;
-                btn.Click += new EventHandler((o, evt) =>
-                {
-                    paintTile = (Tile)((RadioButton)o).Tag;
-                    populatePanel2WithTileEditor();
-                });
-                flow_tiles.Controls.Add(btn);
+                AddAutotile94(autotile, at);
 
             }
+        }
+
+        private void AddAutotile94(Tile autotile, AutoTile94 at)
+        {
+
+            RadioButton btn = new RadioButton();
+            btn.Appearance = Appearance.Button;
+            btn.Size = new System.Drawing.Size(40, 40);
+            btn.Image = autotile.GetBitmap(0, 0);
+
+            int t = Tile.tilesize;
+            var nine = new Bitmap(t * 3, t * 3);
+            var four = new Bitmap(t * 2, t * 2);
+            using (Graphics g = Graphics.FromImage(nine))
+            {
+                for (int x = 0; x < 3; x++)
+                {
+                    for (int y = 0; y < 3; y++)
+                    {
+                        g.DrawImage(autotile.GetBitmap(0, 0), t * x, t * y);
+                    }
+                }
+            }
+
+            using (Graphics g = Graphics.FromImage(four))
+            {
+                for (int x = 0; x < 2; x++)
+                {
+                    for (int y = 0; y < 2; y++)
+                    {
+                        g.DrawImage(autotile.GetBitmap(0, 0), t * x, t * y);
+                    }
+                }
+            }
+
+
+            btn.Tag = at;
+            btn.Click += new EventHandler((o, evt) =>
+            {
+                paintTile = (Tile)((RadioButton)o).Tag;
+                populatePanel2WithTileEditor();
+            });
+            flow_tiles.Controls.Add(btn);
         }
 
         void simpleTile_Click(object sender, EventArgs e)
@@ -409,32 +416,30 @@ namespace tilemapmaker
                                 }
                                 else if (ctl.Tag is AutoTile)
                                 {
-                                    tiles.Write(TileType.AUTOTILE);
                                     var at = ctl.Tag as AutoTile;
+                                    tiles.Write(at.Type);
 
-                                    List<AutoTileFormatEntry> atfs = new List<AutoTileFormatEntry>();
+                                    List<int> atfs = new List<int>();
 
-                                    foreach (var tup in at.GetTiles())
+                                    foreach (var st in at.rawtiles)
                                     {
-                                        var res = InsertSimpleTile(tf, bmp, ref curx, ref cury, g, ref count, tup.Item2);
+                                        var res = InsertSimpleTile(tf, bmp, ref curx, ref cury, g, ref count, st);
                                         if (!res)
                                         {
                                             bigenough = false;
                                             break;
                                         }
-                                        AutoTileFormatEntry atfe = new AutoTileFormatEntry();
-                                        atfe.basictile = tup.Item2.num;
-                                        atfe.surround = tup.Item1;
-                                        atfs.Add(atfe);
+                                        atfs.Add(st.num);
                                     }
 
                                     AutoTileFormat atf = new AutoTileFormat();
                                     atf.numOfTiles = atfs.Count;
-                                    atf.entries = atfs.ToArray();
+                                    atf.basictiles = atfs.ToArray();
                                     tiles.Write(atf);
                                 }
                             }
                         }
+
                         if (bigenough)
                         {
                             bmp.Save(sfd.FileName + ".png", ImageFormat.Png);
@@ -537,10 +542,15 @@ namespace tilemapmaker
                         {
                             AddSimpleTile(simpletiles[tile.simp[0].basictile]);
                         }
-                        else if (tile.type == TileType.AUTOTILE)
+                        else if (tile.type == TileType.AUTOTILE12)
                         {
-                            AutoTile12 at = new AutoTile12(simpletiles, tile.auto[0].entries);
-                            AddAutotile(at, at);
+                            AutoTile12 at = new AutoTile12(simpletiles, tile.auto[0].basictiles);
+                            AddAutotile12(at, at);
+                        }
+                        else if (tile.type == TileType.AUTOTILE94)
+                        {
+                            AutoTile94 at = new AutoTile94(simpletiles, tile.auto[0].basictiles);
+                            AddAutotile94(at, at);
                         }
                     }
                 }

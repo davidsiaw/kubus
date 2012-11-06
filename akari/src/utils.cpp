@@ -2,6 +2,7 @@
 #include <sdl.h>
 #include <GL/glew.h>
 
+#include <float.h>
 #include "utils.h"
 
 void Init3D(int screenWidth, int screenHeight) {
@@ -42,16 +43,18 @@ void Init3D(int screenWidth, int screenHeight) {
 	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
 	glClearDepth(1.0f);									// Depth Buffer Setup
-	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
 	glEnable(GL_CULL_FACE);
 	//glEnable(0x81AB);
-	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
 
-
-	glEnable (GL_ALPHA_TEST); 
+	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+	glDepthFunc(GL_LESS);								// The Type Of Depth Testing To Do
+	
 	glEnable (GL_BLEND); 
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable (GL_ALPHA_TEST); 
+	glAlphaFunc (GL_GREATER, 0);
 }
 
 void glEnable2D(float camerax, float cameray)
@@ -64,7 +67,7 @@ void glEnable2D(float camerax, float cameray)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glOrtho(0-camerax, vPort[2]-camerax, vPort[3]-cameray, 0-cameray, -100, 100);
+	glOrtho(0-camerax, vPort[2]-camerax, vPort[3]-cameray, 0-cameray, SHRT_MIN, SHRT_MAX);
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();

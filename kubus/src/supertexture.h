@@ -22,10 +22,18 @@
 #define amask 0xff000000
 #endif
 
+struct TexInfo
+{
+	TexCoord coords[4];
+	GLfloat x, y;	// top left corner
+	GLfloat w, h;	// width and height of each frame
+	int modes;
+	int frames;
+};
 
 class SuperTextureInfo
 {
-	typedef std::pair<boost::shared_ptr<SDL_Surface>, std::map<SDL_Surface*, std::vector<TexCoord>>> TheInfo;
+	typedef std::pair<boost::shared_ptr<SDL_Surface>, std::map<SDL_Surface*, TexInfo>> TheInfo;
 
 	boost::shared_ptr<TheInfo> info;
 public:
@@ -46,7 +54,7 @@ public:
 			SDL_FreeSurface);
 	}
 
-	std::vector<TexCoord>& operator[] (SDL_Surface* surface) 
+	TexInfo& operator[] (SDL_Surface* surface) const 
 	{
 		return info->second[surface];
 	}
@@ -63,23 +71,30 @@ public:
 
 class SuperTexture
 {
-	typedef RBSPNode<SDL_Surface*, SuperTextureInfo&> TextureTree;
+	struct ImageInfo
+	{
+		SDL_Surface* surf;
+		int animFrames;
+		int modes;
+	};
+	typedef RBSPNode<ImageInfo, SuperTextureInfo&> TextureTree;
 
-	std::vector<SDL_Surface*> images;
+	std::vector<ImageInfo> images;
 
 public:
 	SuperTexture() : images()
 	{
 	}
 
-	void Add(SDL_Surface* img)
+	void Add(SDL_Surface* img, int animFrames=1, int modes=1)
 	{
-		images.push_back(img);
+		ImageInfo ii = {img, animFrames, modes};
+		images.push_back(ii);
 	}
 	
 	class TooManyImagesException{};
 
-	static void SetSurface (FRectangle rect, SDL_Surface* data, SuperTextureInfo& info)
+	static void SetSurface (FRectangle rect, ImageInfo data, SuperTextureInfo& info)
 	{
 		int size = info.GetSuperTextureSurface()->w;
 
@@ -90,8 +105,8 @@ public:
 		r.w = (Sint16)(rect.x2-rect.x1);
 		r.h = (Sint16)(rect.y2-rect.y1);
 		
-		SDL_SetAlpha(data, 0, SDL_ALPHA_OPAQUE);
-		SDL_BlitSurface(data, &data->clip_rect, info.GetSuperTextureSurface(), &r);
+		SDL_SetAlpha(data.surf, 0, SDL_ALPHA_OPAQUE);
+		SDL_BlitSurface(data.surf, &data.surf->clip_rect, info.GetSuperTextureSurface(), &r);
 
 		std::vector<TexCoord> coords;
 		TexCoord t1;
@@ -111,15 +126,18 @@ public:
 		t4.x = rect.x1/size;
 		t4.y = rect.y1/size;
 
-		coords.push_back(t1);
-		coords.push_back(t2);
-		coords.push_back(t3);
-		coords.push_back(t4);
+		TexInfo ti;
+		ti.coords[0] = t1;
+		ti.coords[1] = t2;
+		ti.coords[2] = t3;
+		ti.coords[3] = t4;
+		ti.frames = data.animFrames;
+		ti.modes = data.modes;
+		ti.w = r.w / size / ti.frames;
+		ti.h = r.h / size / ti.modes;
 		
-		info[data] = coords;
+		info[data.surf] = ti;
 	}
-
-
 
 	SuperTextureInfo CreateSuperTexture()
 	{
@@ -135,17 +153,17 @@ public:
 			TextureTree rbsp(r);
 			
 			// First sort by size
-			std::sort(images.begin(), images.end(), [](SDL_Surface* a, SDL_Surface* b)
+			std::sort(images.begin(), images.end(), [](ImageInfo& a, ImageInfo& b)
 			{
-				return std::max(a->w, a->h) < std::max(b->w, b->h);
+				return std::max(a.surf->w, a.surf->h) < std::max(b.surf->w, b.surf->h);
 			});
 
-			SDL_Surface* const* surfaceArray = &images[0];
+			ImageInfo* surfaceArray = &images[0];
 
 			// Now insert
 			for(size_t i=0; i<images.size(); i++)
 			{
-				FRectangle rect = {0,0,(float)surfaceArray[i]->w,(float)surfaceArray[i]->h};
+				FRectangle rect = {0,0,(float)surfaceArray[i].surf->w,(float)surfaceArray[i].surf->h};
 				if ( !rbsp.Insert(rect, surfaceArray[i]) )
 				{
 					bigenough = false;

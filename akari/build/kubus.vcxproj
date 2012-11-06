@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\btileset.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\primitives.cpp" />
+    <ClCompile Include="..\src\tilemapeditorscene.cpp" />
     <ClCompile Include="..\src\tilemapscene.cpp" />
     <ClCompile Include="..\src\utils.cpp" />
   </ItemGroup>
@@ -55,23 +57,41 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\akari.h" />
+    <ClInclude Include="..\src\autotile.h" />
+    <ClInclude Include="..\src\bitmapfont.h" />
+    <ClInclude Include="..\src\btileset.h" />
+    <ClInclude Include="..\src\cache.h" />
+    <ClInclude Include="..\src\characteraction.h" />
     <ClInclude Include="..\src\composition_interface.h" />
+    <ClInclude Include="..\src\directoryresources.h" />
+    <ClInclude Include="..\src\fontinfo.h" />
     <ClInclude Include="..\src\font_interface.h" />
     <ClInclude Include="..\src\mapdesc_interface.h" />
     <ClInclude Include="..\src\matrix.h" />
+    <ClInclude Include="..\src\mobilecharacter.h" />
+    <ClInclude Include="..\src\mobilecharacterset.h" />
+    <ClInclude Include="..\src\objectdirection.h" />
+    <ClInclude Include="..\src\objectlayer.h" />
+    <ClInclude Include="..\src\objectset_interface.h" />
+    <ClInclude Include="..\src\object_interface.h" />
     <ClInclude Include="..\src\ordinarytexanimshader.h" />
     <ClInclude Include="..\src\primitives.h" />
     <ClInclude Include="..\src\resources_interface.h" />
     <ClInclude Include="..\src\scene_interface.h" />
     <ClInclude Include="..\src\shader_interface.h" />
+    <ClInclude Include="..\src\simpletile.h" />
     <ClInclude Include="..\src\texanimshader_interface.h" />
     <ClInclude Include="..\src\textlayer.h" />
     <ClInclude Include="..\src\tilecomposition.h" />
     <ClInclude Include="..\src\tileframe.h" />
     <ClInclude Include="..\src\tileid.h" />
+    <ClInclude Include="..\src\tileinfo.h" />
+    <ClInclude Include="..\src\tilemapeditorscene.h" />
     <ClInclude Include="..\src\tilemaplayer.h" />
     <ClInclude Include="..\src\tilemapscene.h" />
     <ClInclude Include="..\src\tileset_interface.h" />
+    <ClInclude Include="..\src\tile_interface.h" />
+    <ClInclude Include="..\src\tile_type.h" />
     <ClInclude Include="..\src\utils.h" />
     <ClInclude Include="..\src\vertexbuffer.h" />
   </ItemGroup>

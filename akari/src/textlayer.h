@@ -100,6 +100,7 @@ public:
 				chrquad.e[1].v.x += pos;
 				chrquad.e[2].v.x += pos;
 				chrquad.e[3].v.x += pos;
+
 				vbuf->ChangeQuadAt(i, chrquad);
 				
 				if (i+1 != str.size())
@@ -124,7 +125,10 @@ public:
 	{
 		if (vbuf != NULL)
 		{
+			glTranslatef(0,0,SHRT_MAX);
+			glPushMatrix();
 			vbuf->Render(0, transparency);
+			glPopMatrix();
 		}
 	}
 

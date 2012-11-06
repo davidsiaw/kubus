@@ -30,20 +30,11 @@ public:
 			{
 				auto frame = tileset->getframeforid(tilex + x, tiley + y, [mapdesc](int x, int y){return mapdesc->getid(x,y);});
 
-				quad q = MakeQuad((tilex + x) * 32, (tiley + y) * 32, 32, 32);
-				q.e[0].t = frame.startframecoord[0];
-				q.e[1].t = frame.startframecoord[1];
-				q.e[2].t = frame.startframecoord[2];
-				q.e[3].t = frame.startframecoord[3];
-				q.e[0].tileOffset = frame.width;
-				q.e[1].tileOffset = frame.width;
-				q.e[2].tileOffset = frame.width;
-				q.e[3].tileOffset = frame.width;
-				q.e[0].numtiles = frame.numframes;
-				q.e[1].numtiles = frame.numframes;
-				q.e[2].numtiles = frame.numframes;
-				q.e[3].numtiles = frame.numframes;
-				quads.push_back(q);
+				for (int i=0;i<std::get<0>(frame);i++)
+				{
+					quads.push_back(std::get<1>(frame)[i]);
+				}
+
 			}
 		}
 	}

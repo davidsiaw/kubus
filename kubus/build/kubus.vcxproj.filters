@@ -129,6 +129,9 @@
     <ClInclude Include="..\src\texturedquadcomposition.h">
       <Filter>Composition2D</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\spritebuffer.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="App">
@@ -166,6 +169,9 @@
     </Filter>
     <Filter Include="Scenes\TextScene">
       <UniqueIdentifier>{b4265346-f5de-44cc-b982-62de595bbf84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sprite">
+      <UniqueIdentifier>{fcf646f3-4bfd-4034-a0fc-be1b11777b43}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

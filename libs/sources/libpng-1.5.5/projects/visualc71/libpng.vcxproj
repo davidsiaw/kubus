@@ -324,7 +324,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='LIB Release|Win32'">
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..;..\..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;..\..\..\zlib;D:\gcc\libs\sources\zlib-1.2.5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -344,7 +344,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='LIB Release|x64'">
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>..\..;..\..\..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..;..\..\..\zlib;D:\gcc\libs\sources\zlib-1.2.5;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -356,6 +356,7 @@
     </ClCompile>
     <Lib>
       <OutputFile>$(OutDir)libpng.lib</OutputFile>
+      <TargetMachine>MachineX64</TargetMachine>
     </Lib>
     <PreBuildEvent>
       <Command>copy ..\..\scripts\pnglibconf.h.prebuilt ..\..\pnglibconf.h</Command>

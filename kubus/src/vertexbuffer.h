@@ -159,7 +159,25 @@ public:
 		uTexture = glGetUniformLocation(shader, "uTexture");
 		uTransparency = glGetUniformLocation(shader, "uTransparency");
 	}
-	
+
+	void ChangeQuadAt(size_t index, Quad q)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(Quad), sizeof(Quad), &q);
+	}
+
+	void ChangeTriangle(size_t index, Triangle t)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(Triangle), sizeof(Triangle), &t);
+	}
+
+	void ChangeElementAt(size_t index, Element e)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(Element), sizeof(Element), &e);
+	}
+
 	~VertexBuffer()
 	{
         glBindBuffer(GL_ARRAY_BUFFER, buffer);

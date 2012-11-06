@@ -169,7 +169,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Create 9-4 Auto Tile";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.autoTile_Click);
+            this.button2.Click += new System.EventHandler(this.autoTile94_Click);
             // 
             // button1
             // 

@@ -184,8 +184,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>graphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_JPG_DYNAMIC="jpeg.dll";LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNG_DYNAMIC="libpng12-0.dll";LOAD_PNM;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-3.dll";LOAD_XPM;LOAD_XV;PNG_USE_DLL;ZLIB_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\gcc\libs\sources\libpng-1.5.5;D:\gcc\libs\sources\SDL-1.2.14\include;D:\gcc\libs\sources\jpeg-6b;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_JPG_DYNAMIC="jpeg.dll";LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_TGA;LOAD_TIF_DYNAMIC="libtiff-3.dll";LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -226,8 +226,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>graphics\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_JPG_DYNAMIC="jpeg.dll";LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNG_DYNAMIC="libpng12-0.dll";LOAD_PNM;LOAD_TGA;LOAD_TIF;LOAD_TIF_DYNAMIC="libtiff-3.dll";LOAD_XPM;LOAD_XV;PNG_USE_DLL;ZLIB_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\gcc\libs\sources\libpng-1.5.5;D:\gcc\libs\sources\SDL-1.2.14\include;D:\gcc\libs\sources\jpeg-6b;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;LOAD_BMP;LOAD_GIF;LOAD_JPG;LOAD_JPG_DYNAMIC="jpeg.dll";LOAD_LBM;LOAD_PCX;LOAD_PNG;LOAD_PNM;LOAD_TGA;LOAD_TIF_DYNAMIC="libtiff-3.dll";LOAD_XPM;LOAD_XV;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -254,6 +254,9 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\Release/SDL_image.bsc</OutputFile>
     </Bscmake>
+    <Lib>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\IMG.c">
@@ -407,6 +410,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\SDL_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libpng-1.5.5\projects\visualc71\libpng.vcxproj">
+      <Project>{867ac197-332e-be97-297d-2d5ee95add6d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\zlib-1.2.5\contrib\vstudio\vc10\zlibvc.vcxproj">
+      <Project>{8fd826f8-3739-44e6-8cc8-997122e53b8d}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

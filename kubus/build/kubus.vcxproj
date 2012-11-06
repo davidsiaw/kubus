@@ -61,6 +61,7 @@
     <ClInclude Include="..\src\supertexture.h" />
     <ClInclude Include="..\src\textscene.h" />
     <ClInclude Include="..\src\texturedquadcomposition.h" />
+    <ClInclude Include="..\src\spritebuffer.h" />
     <ClInclude Include="..\src\vertexbuffer.h" />
     <ClInclude Include="..\src\vnscene.h" />
     <ClInclude Include="..\src\world.h" />

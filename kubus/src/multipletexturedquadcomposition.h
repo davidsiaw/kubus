@@ -26,7 +26,7 @@ public:
 	{
 	}
 
-	void Add(Quad* q, SDL_Surface* img)
+	size_t Add(Quad* q, SDL_Surface* img)
 	{
 		quads.push_back(*q);
 
@@ -37,6 +37,13 @@ public:
 		surfToQuadMap[img].push_back(quads.size()-1);
 
 		supertexturer.Add(img);
+
+		return quads.size()-1;
+	}
+
+	Quad GetQuad(size_t index)
+	{
+		return quads[index];
 	}
 
 	class TooManyImagesException{};
@@ -51,14 +58,14 @@ public:
 		std::for_each(surfToQuadMap.begin(), surfToQuadMap.end(), 
 			[&](std::pair<SDL_Surface*, std::vector<size_t>> kvpair)
 			{
-				auto coords = tex[kvpair.first];
+				auto texinfo = tex[kvpair.first];
 				std::vector<Quad>& thisquads = quads;
 
 				std::for_each(kvpair.second.begin(), kvpair.second.end(), 
 					[&](size_t index)
 					{
 						for (int i=0;i<4;i++) {
-							thisquads[index].e[i].t = coords[i];
+							thisquads[index].e[i].t = texinfo.coords[i];
 						}
 					});
 			});

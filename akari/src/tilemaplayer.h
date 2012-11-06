@@ -1,6 +1,7 @@
 #ifndef TILEMAPLAYER_H
 #define TILEMAPLAYER_H
 
+#include "akari.h"
 #include "boost/shared_ptr.hpp"
 #include "boost/shared_array.hpp"
 
@@ -31,11 +32,11 @@ class tilemaplayer
 
 	void prepbuffers()
 	{
-		printf("anchorx %d, anchory %d", anchorx, anchory);
-		printf("block matrix:\n");
-		printf("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
-		printf("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
-		printf("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
+		log("anchorx %d, anchory %d", anchorx, anchory);
+		log("block matrix:\n");
+		log("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
+		log("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
+		log("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
 
 		boost::shared_ptr<tilecomposition> tc;
 
@@ -52,10 +53,10 @@ class tilemaplayer
 			}
 		}
 
-		printf("block matrix:\n");
-		printf("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
-		printf("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
-		printf("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
+		log("block matrix:\n");
+		log("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
+		log("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
+		log("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
 	}
 
 public:
@@ -77,12 +78,12 @@ public:
 
 	int getx() const
 	{
-		return camerax;
+		return camerax - screenw/2;
 	}
 	
 	int gety() const
 	{
-		return cameray;
+		return cameray - screenh/2;
 	}
 
 	static int reprep(void* tmlp) {
@@ -93,8 +94,8 @@ public:
 
 	void setcamera(int x, int y)
 	{
-		camerax = x;
-		cameray = y;
+		camerax = x + screenw/2;
+		cameray = y + screenh/2;
 
 		int marginx = screenw/3;
 		int marginy = screenh/3;

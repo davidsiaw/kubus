@@ -7,10 +7,11 @@ using System.Runtime.InteropServices;
 
 namespace tilemapmaker
 {
-    enum TileType
+    public enum TileType
     {
         SIMPLE,
-        AUTOTILE,
+        AUTOTILE12,
+        AUTOTILE94,
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -44,7 +45,7 @@ namespace tilemapmaker
 
         public int GetAutoTile()
         {
-            if (type == TileType.AUTOTILE)
+            if (type == TileType.AUTOTILE12 || type == TileType.AUTOTILE94)
             {
                 return 1;
             }
@@ -70,14 +71,7 @@ namespace tilemapmaker
         public int numOfTiles;
 
         [ArraySize("numOfTiles")]
-        public AutoTileFormatEntry[] entries;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct AutoTileFormatEntry
-    {
-        public byte surround;
-        public int basictile;
+        public int[] basictiles;
     }
 
     [StructLayout(LayoutKind.Sequential)]

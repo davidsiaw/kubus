@@ -30,7 +30,7 @@ public:
 
     Scene* GetCurrentScene()
     {
-		return scene;
+		//return scene;
 
 		// run the script until it yields
 		// the game.setscene function normally yields

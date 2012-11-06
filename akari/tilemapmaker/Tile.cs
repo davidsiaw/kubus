@@ -94,6 +94,8 @@ namespace tilemapmaker
 
         public readonly SimpleTile[] rawtiles;
 
+        public abstract TileType Type { get; }
+
         public static byte getCornerMask(SubTilePos pos, byte surrounding)
         {
             switch (pos)
@@ -110,9 +112,40 @@ namespace tilemapmaker
             throw new Exception("invalid pos value: " + pos);
         }
 
-        Dictionary<int, Bitmap> tileCache = new Dictionary<int, Bitmap>();
+        struct AutoTileSep
+        {
+            public byte tr;
+            public byte br;
+            public byte tl;
+            public byte bl;
 
-        public IEnumerable<Tuple<byte, SimpleTile>> GetTiles()
+            uint combine
+            {
+                get
+                {
+                    return (uint)((tr << 24) | (br << 16) | (tl << 8) | bl);
+                }
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is AutoTileSep)
+                {
+                    return combine == ((AutoTileSep)obj).combine;
+                }
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return combine.GetHashCode();
+            }
+        }
+
+        Dictionary<AutoTileSep, SimpleTile> bitmapCache = new Dictionary<AutoTileSep, SimpleTile>();
+        Dictionary<byte, AutoTileSep> tileCache = new Dictionary<byte, AutoTileSep>();
+
+        public Tuple<Tuple<byte, SimpleTile>[], SimpleTile[]> GetTiles()
         {
             // fill the cache
             for (uint tick = 0; tick < 4; tick++)
@@ -120,35 +153,12 @@ namespace tilemapmaker
                 {
                     GetBitmap((byte)i, tick);
                 }
-            HashSet<byte> validSurrounds = new HashSet<byte>();
-            foreach (var kvpair in tileCache)
-            {
-                byte sur;
-                int tick;
-                GetSurroundingAndTickFromKey(kvpair.Key, out sur, out tick);
-                validSurrounds.Add(sur);
-            }
-            foreach (var validSurround in validSurrounds)
-            {
-                SimpleTile st = new SimpleTile(new Bitmap(Tile.tilesize, Tile.tilesize));
-                for (uint i = 0; i < 4; i++)
-                {
-                    st.bmp[i] = GetBitmap(validSurround, i);
-                }
-                yield return new Tuple<byte, SimpleTile>(validSurround, st);
-            }
-        }
 
-        public static int MakeKeyFromSurroundingAndTick(byte surroundings, uint tick)
-        {
-            int key = surroundings | (int)((tick % 4) << 8);
-            return key;
-        }
+            var kvpairs = bitmapCache.ToArray();
 
-        public static void GetSurroundingAndTickFromKey(int key, out byte surrounding, out int tick)
-        {
-            surrounding = (byte)(key & 0xff);
-            tick = key >> 8;
+            var surroundToIdx = tileCache.Select(x => new Tuple<byte, SimpleTile>(x.Key, bitmapCache[x.Value])).ToArray();
+            return new Tuple<Tuple<byte, SimpleTile>[], SimpleTile[]>(surroundToIdx, kvpairs.Select(x => x.Value).ToArray());
+
         }
 
         protected Bitmap GetBitmap(byte surroundings, uint tick, Rectangle[] corner, byte[,] posAndMaskToTile)
@@ -157,47 +167,68 @@ namespace tilemapmaker
             {
                 surroundings &= 0xf0;
             }
-            int key = MakeKeyFromSurroundingAndTick(surroundings, tick);
-            if (!tileCache.ContainsKey(key))
+
+            tick %= 4;
+
+            var ats = new AutoTileSep()
+            {
+                tr = posAndMaskToTile[
+                        (int)SubTilePos.TopRight,
+                        getCornerMask(SubTilePos.TopRight, surroundings)],
+                tl = posAndMaskToTile[
+                        (int)SubTilePos.TopLeft,
+                        getCornerMask(SubTilePos.TopLeft, surroundings)],
+                br = posAndMaskToTile[
+                        (int)SubTilePos.BottomRight,
+                        getCornerMask(SubTilePos.BottomRight, surroundings)],
+                bl = posAndMaskToTile[
+                        (int)SubTilePos.BottomLeft,
+                        getCornerMask(SubTilePos.BottomLeft, surroundings)]
+            };
+
+            if (!tileCache.ContainsKey(surroundings))
+            {
+                tileCache[surroundings] = ats;
+            }
+
+            if (!bitmapCache.ContainsKey(ats))
+            {
+                bitmapCache[ats] = new SimpleTile(null);
+            }
+
+            if (bitmapCache[ats].bmp[tick] == null)
             {
                 Bitmap b = new Bitmap(Tile.tilesize, Tile.tilesize);
-                tileCache[key] = b;
                 using (Graphics g = Graphics.FromImage(b))
                 {
                     g.DrawImage(
-                        rawtiles[posAndMaskToTile[
-                            (int)SubTilePos.TopRight,
-                            getCornerMask(SubTilePos.TopRight, surroundings)]].GetBitmap(surroundings, tick),
+                        rawtiles[ats.tr].GetBitmap(surroundings, tick),
                         corner[(int)SubTilePos.TopRight],
                         corner[(int)SubTilePos.TopRight],
                         GraphicsUnit.Pixel);
 
                     g.DrawImage(
-                        rawtiles[posAndMaskToTile[
-                            (int)SubTilePos.BottomRight,
-                            getCornerMask(SubTilePos.BottomRight, surroundings)]].GetBitmap(surroundings, tick),
+                        rawtiles[ats.br].GetBitmap(surroundings, tick),
                         corner[(int)SubTilePos.BottomRight],
                         corner[(int)SubTilePos.BottomRight],
                         GraphicsUnit.Pixel);
 
                     g.DrawImage(
-                        rawtiles[posAndMaskToTile[
-                            (int)SubTilePos.BottomLeft,
-                            getCornerMask(SubTilePos.BottomLeft, surroundings)]].GetBitmap(surroundings, tick),
+                        rawtiles[ats.bl].GetBitmap(surroundings, tick),
                         corner[(int)SubTilePos.BottomLeft],
                         corner[(int)SubTilePos.BottomLeft],
                         GraphicsUnit.Pixel);
 
                     g.DrawImage(
-                        rawtiles[posAndMaskToTile[
-                            (int)SubTilePos.TopLeft,
-                            getCornerMask(SubTilePos.TopLeft, surroundings)]].GetBitmap(surroundings, tick),
+                        rawtiles[ats.tl].GetBitmap(surroundings, tick),
                         corner[(int)SubTilePos.TopLeft],
                         corner[(int)SubTilePos.TopLeft],
                         GraphicsUnit.Pixel);
                 }
+                bitmapCache[ats].bmp[tick] = b;
             }
-            return tileCache[key];
+
+            return bitmapCache[tileCache[surroundings]].bmp[tick];
         }
     }
 
@@ -249,31 +280,23 @@ namespace tilemapmaker
             }
         }
 
-        public AutoTile12(SimpleTile[] simpletiles, AutoTileFormatEntry[] autoTileFormatEntry)
+        public AutoTile12(SimpleTile[] simpletiles, int[] basicTiles)
             : base(11)
         {
-            Dictionary<byte, SimpleTile> surrounds = new Dictionary<byte, SimpleTile>();
-            foreach (var atfe in autoTileFormatEntry)
+            for (int i = 0; i < rawtiles.Length; i++)
             {
-                surrounds[atfe.surround] = simpletiles[atfe.basictile];
+                rawtiles[i] = simpletiles[basicTiles[i]];
             }
-            rawtiles[0] = surrounds[0xc4];
-            rawtiles[1] = surrounds[0xdc];
-            rawtiles[2] = surrounds[0x98];
-            rawtiles[3] = surrounds[0xb9];
-            rawtiles[4] = surrounds[0x31];
-            rawtiles[5] = surrounds[0x73];
-            rawtiles[6] = surrounds[0x62];
-            rawtiles[7] = surrounds[0xe6];
-            rawtiles[8] = surrounds[0xff];
-            rawtiles[9] = surrounds[0xf0];
-            rawtiles[10] = surrounds[0];
-
         }
 
         public override Bitmap GetBitmap(byte surroundings, uint tick)
         {
             return GetBitmap(surroundings, tick, corner, posAndMaskToTile);
+        }
+
+        public override TileType Type
+        {
+            get { return TileType.AUTOTILE12; }
         }
     }
 
@@ -327,9 +350,24 @@ namespace tilemapmaker
             }
         }
 
+
+        public AutoTile94(SimpleTile[] simpletiles, int[] basicTiles)
+            : base(13)
+        {
+            for (int i = 0; i < rawtiles.Length; i++)
+            {
+                rawtiles[i] = simpletiles[basicTiles[i]];
+            }
+        }
+
         public override Bitmap GetBitmap(byte surroundings, uint tick)
         {
             return GetBitmap(surroundings, tick, corner, posAndMaskToTile);
+        }
+
+        public override TileType Type
+        {
+            get { return TileType.AUTOTILE94; }
         }
 
     }
