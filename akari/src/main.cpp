@@ -11,6 +11,9 @@
 
 #include "tilemapscene.h"
 
+#include "scenario_interface.h"
+#include "scenariobasedscene.h"
+
 #include <map>
 #include "btileset.h"
 #include "directoryresources.h"
@@ -92,6 +95,132 @@ public:
 };
 
 
+class myscenario : public scenario_interface
+{
+
+	boost::shared_ptr<ordinarytexanimshader> shader;
+	boost::shared_ptr<font_interface> font;
+	boost::shared_ptr<tilemaplayer> tilelayer;
+
+	boost::shared_ptr<objectset_interface> objectset;
+
+	boost::shared_ptr<textlayer> campos;
+	boost::shared_ptr<objectlayer> objects;
+
+	boost::shared_ptr<mobilecharacter> playerobject;
+
+	boost::shared_ptr<mobilecharacter> addobject(int id)
+	{
+		auto anotherobject = objectset->createobject(id);
+		objects->addobject(anotherobject);
+		return anotherobject;
+	}
+
+public:
+	myscenario(boost::shared_ptr<resources_interface> resources, boost::shared_ptr<mapdesc_interface> mapdesc, boost::shared_ptr<font_interface> font) :
+		shader(new ordinarytexanimshader()), 
+		font(font),
+		tilelayer(new tilemaplayer(shader, resources, mapdesc,800,600)),
+		campos(new textlayer(shader, resources, font)),
+		objectset(new mobilecharacterset()),
+		objects(new objectlayer(shader, resources, objectset, 800, 600))
+	{
+		playerobject = addobject(1);
+
+		auto anotherobject = addobject(1);
+		anotherobject->setlocation(50,50);
+		objects->updateobject(anotherobject);
+
+	}
+
+	virtual void setresolution(int width, int height)
+	{
+	}
+
+	virtual boost::shared_ptr<mobilecharacter> gethero()
+	{
+		return playerobject;
+	}
+
+	virtual void update()
+	{
+		tilelayer->setcamera(-playerobject->getx(), -playerobject->gety());
+	}
+
+	virtual void render()
+	{
+		static int a = 0;
+		glLoadIdentity();
+
+		tilelayer->render((a/15)%4);
+	
+		objects->setcamera(tilelayer->getx(), tilelayer->gety());
+		objects->render((a/15)%4);
+
+		glEnable2D(50,50);
+		campos->render(1.0);
+
+		glDisable2D();
+		a++;
+	}
+
+	virtual bool ended() const
+	{
+		return false;
+	}
+
+	virtual void commandcharacter(boost::shared_ptr<mobilecharacter> character, objectdirection dir, characteraction act)
+	{
+		int dx=0;
+		int dy=0;
+		const int walkspeed = 2;
+
+		if (act == WALK)
+		{
+			switch(dir)
+			{
+			case LEFT:
+				dx = -walkspeed;
+				break;
+			case RIGHT:
+				dx = +walkspeed;
+				break;
+			case UP:
+				dy = -walkspeed;
+				break;
+			case DOWN:
+				dy = +walkspeed;
+				break;
+			}
+		}
+
+		if (dx != 0 || dy != 0)
+		{
+			int newx = character->getx() + dx;
+			int newy = character->gety() + dy;
+			objects->foreachobject([&](boost::shared_ptr<object_interface> obj) -> bool
+			{
+				mobilecharacter* o = (mobilecharacter*)obj.get();
+				int distx = newx - o->getx();
+				int disty = newy - o->gety();
+				if (o != character.get() && distx*distx+disty*disty < 1024)
+				{
+					newx = character->getx();
+					newy = character->gety();
+					return false;
+				}
+				return true;
+			});
+
+			character->setlocation(newx, newy);
+		}
+
+		character->setaction(act);
+		character->setdirection(dir);
+		objects->updateobject(character);
+	}
+};
+
 int main(int argc, char* argv[])
 {
 	if (initialize() != EXIT_SUCCESS)
@@ -102,6 +231,11 @@ int main(int argc, char* argv[])
 	boost::shared_ptr<directoryresources> dirres(new directoryresources("D:/gcc/akari/res/"));
 	boost::shared_ptr<mapdesc_interface> mapd(new mymapdesc());
 	boost::shared_ptr<font_interface> font = dirres->getfont("myfont");
+
+	boost::shared_ptr<scenario_interface> scenario(new myscenario(dirres, mapd, font));
+	boost::shared_ptr<scenariobasedscene> scene(new scenariobasedscene(scenario));
+	run(scene);
+
 
 	boost::shared_ptr<tilemapscene> tms(new tilemapscene(dirres, mapd, font));
 	run(tms);

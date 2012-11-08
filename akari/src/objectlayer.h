@@ -95,6 +95,18 @@ public:
 		increasequadspace(1);
 	}
 
+	void foreachobject(std::function<bool(boost::shared_ptr<object_interface>)> objects)
+	{
+		typedef std::vector<boost::shared_ptr<object_interface>>::iterator iterator;
+		for (iterator i = objectlist.begin(); i != objectlist.end(); i++)
+		{
+			if (!objects(*i))
+			{
+				return;
+			}
+		}
+	}
+
 	void addobject(boost::shared_ptr<object_interface> obj)
 	{
 		if (obj->getid() != -1)

@@ -33,6 +33,11 @@ public:
 		this->dir = dir;
 	}
 
+	objectdirection getdirection() const
+	{
+		return this->dir;
+	}
+
 	int getx() const
 	{
 		return x;

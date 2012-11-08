@@ -31,6 +31,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tc_main = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.draggableMap1 = new tilemapmaker.DraggableMap();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.button3 = new System.Windows.Forms.Button();
@@ -40,6 +41,8 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tc_topLeft = new System.Windows.Forms.TabControl();
             this.tab_file = new System.Windows.Forms.TabPage();
+            this.btn_makefont = new System.Windows.Forms.Button();
+            this.btn_loadtiles = new System.Windows.Forms.Button();
             this.btn_savetiles = new System.Windows.Forms.Button();
             this.btn_downlevel = new System.Windows.Forms.Button();
             this.btn_uplevel = new System.Windows.Forms.Button();
@@ -48,15 +51,14 @@
             this.tc_tileLists = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.flow_tiles = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_makefont = new System.Windows.Forms.Button();
-            this.draggableMap1 = new tilemapmaker.DraggableMap();
-            this.btn_loadtiles = new System.Windows.Forms.Button();
+            this.btn_makeCharacter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tc_main.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.draggableMap1)).BeginInit();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -72,7 +74,6 @@
             this.splitContainer3.SuspendLayout();
             this.tc_tileLists.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.draggableMap1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -113,6 +114,17 @@
             this.tabPage2.TabIndex = 0;
             this.tabPage2.Text = "Map";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // draggableMap1
+            // 
+            this.draggableMap1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.draggableMap1.highlightheight = 0;
+            this.draggableMap1.highlightwidth = 0;
+            this.draggableMap1.Location = new System.Drawing.Point(3, 3);
+            this.draggableMap1.Name = "draggableMap1";
+            this.draggableMap1.Size = new System.Drawing.Size(985, 670);
+            this.draggableMap1.TabIndex = 0;
+            this.draggableMap1.TabStop = false;
             // 
             // tabPage1
             // 
@@ -214,6 +226,7 @@
             // 
             // tab_file
             // 
+            this.tab_file.Controls.Add(this.btn_makeCharacter);
             this.tab_file.Controls.Add(this.btn_makefont);
             this.tab_file.Controls.Add(this.btn_loadtiles);
             this.tab_file.Controls.Add(this.btn_savetiles);
@@ -227,6 +240,28 @@
             this.tab_file.TabIndex = 0;
             this.tab_file.Text = "File";
             this.tab_file.UseVisualStyleBackColor = true;
+            // 
+            // btn_makefont
+            // 
+            this.btn_makefont.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_makefont.Location = new System.Drawing.Point(3, 118);
+            this.btn_makefont.Name = "btn_makefont";
+            this.btn_makefont.Size = new System.Drawing.Size(294, 23);
+            this.btn_makefont.TabIndex = 4;
+            this.btn_makefont.Text = "Make Font";
+            this.btn_makefont.UseVisualStyleBackColor = true;
+            this.btn_makefont.Click += new System.EventHandler(this.btn_makefont_Click);
+            // 
+            // btn_loadtiles
+            // 
+            this.btn_loadtiles.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_loadtiles.Location = new System.Drawing.Point(3, 95);
+            this.btn_loadtiles.Name = "btn_loadtiles";
+            this.btn_loadtiles.Size = new System.Drawing.Size(294, 23);
+            this.btn_loadtiles.TabIndex = 5;
+            this.btn_loadtiles.Text = "Load Tiles";
+            this.btn_loadtiles.UseVisualStyleBackColor = true;
+            this.btn_loadtiles.Click += new System.EventHandler(this.btn_loadtiles_Click);
             // 
             // btn_savetiles
             // 
@@ -315,36 +350,16 @@
             this.flow_tiles.Size = new System.Drawing.Size(313, 203);
             this.flow_tiles.TabIndex = 0;
             // 
-            // btn_makefont
+            // btn_makeCharacter
             // 
-            this.btn_makefont.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_makefont.Location = new System.Drawing.Point(3, 118);
-            this.btn_makefont.Name = "btn_makefont";
-            this.btn_makefont.Size = new System.Drawing.Size(294, 23);
-            this.btn_makefont.TabIndex = 4;
-            this.btn_makefont.Text = "Make Font";
-            this.btn_makefont.UseVisualStyleBackColor = true;
-            this.btn_makefont.Click += new System.EventHandler(this.btn_makefont_Click);
-            // 
-            // draggableMap1
-            // 
-            this.draggableMap1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.draggableMap1.Location = new System.Drawing.Point(3, 3);
-            this.draggableMap1.Name = "draggableMap1";
-            this.draggableMap1.Size = new System.Drawing.Size(985, 670);
-            this.draggableMap1.TabIndex = 0;
-            this.draggableMap1.TabStop = false;
-            // 
-            // btn_loadtiles
-            // 
-            this.btn_loadtiles.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_loadtiles.Location = new System.Drawing.Point(3, 95);
-            this.btn_loadtiles.Name = "btn_loadtiles";
-            this.btn_loadtiles.Size = new System.Drawing.Size(294, 23);
-            this.btn_loadtiles.TabIndex = 5;
-            this.btn_loadtiles.Text = "Load Tiles";
-            this.btn_loadtiles.UseVisualStyleBackColor = true;
-            this.btn_loadtiles.Click += new System.EventHandler(this.btn_loadtiles_Click);
+            this.btn_makeCharacter.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_makeCharacter.Location = new System.Drawing.Point(3, 141);
+            this.btn_makeCharacter.Name = "btn_makeCharacter";
+            this.btn_makeCharacter.Size = new System.Drawing.Size(294, 23);
+            this.btn_makeCharacter.TabIndex = 6;
+            this.btn_makeCharacter.Text = "Make Character";
+            this.btn_makeCharacter.UseVisualStyleBackColor = true;
+            this.btn_makeCharacter.Click += new System.EventHandler(this.btn_makeCharacter_Click);
             // 
             // Form1
             // 
@@ -360,6 +375,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.tc_main.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.draggableMap1)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
@@ -375,7 +391,6 @@
             this.splitContainer3.ResumeLayout(false);
             this.tc_tileLists.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.draggableMap1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -405,6 +420,7 @@
         private System.Windows.Forms.Button btn_savetiles;
         private System.Windows.Forms.Button btn_makefont;
         private System.Windows.Forms.Button btn_loadtiles;
+        private System.Windows.Forms.Button btn_makeCharacter;
     }
 }
 

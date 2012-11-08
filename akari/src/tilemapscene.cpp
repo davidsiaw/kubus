@@ -13,8 +13,8 @@ tilemapscene::tilemapscene(boost::shared_ptr<resources_interface> resources, boo
 	campos(new textlayer(shader, resources, font)),
 	objectset(new mobilecharacterset()),
 	objects(new objectlayer(shader, resources, objectset, 800, 600)),
-	playerobject(new mobilecharacter()),
-	otherobject(new mobilecharacter())
+	playerobject(objectset->createobject(1)),
+	otherobject(objectset->createobject(1))
 {
 	objects->addobject(playerobject);
 	objects->addobject(otherobject);
@@ -104,8 +104,6 @@ void tilemapscene::render()
 	campos->render(1.0);
 
 	glDisable2D();
-	
-	
 	a++;
 }
 

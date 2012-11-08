@@ -11,40 +11,21 @@ using System.Drawing.Imaging;
 
 namespace tilemapmaker
 {
-    public partial class DraggableMap : PictureBox, IMessageFilter
+    public partial class PixelEditor : PictureBox
     {
-        public Tile[,,] map;
+        public Bitmap map = new Bitmap(128, 192);
         int camx, camy;
         float zoom = 1;
-        int level = 0;
 
-        public DraggableMap()
+        public PixelEditor()
         {
             InitializeComponent();
-            Application.AddMessageFilter(this);
-            map = new Tile[50, 50, 3];
         }
 
-        public void UpLevel()
+        public void SetBitmap(Bitmap bmp)
         {
-            level++;
-            if (level >= map.GetLength(2))
-            {
-                level = map.GetLength(2) - 1;
-            }
-            Refresh();
+            map = bmp;
         }
-
-        public void DownLevel()
-        {
-            level--;
-            if (level < 0)
-            {
-                level = 0;
-            }
-            Refresh();
-        }
-
 
         bool dragging = false;
         int dragfromx, dragfromy;
@@ -130,14 +111,24 @@ namespace tilemapmaker
             }
         }
 
-        public void PutTile(int tilex, int tiley, Tile t)
+        public void PutTile(int tilex, int tiley, Color t)
         {
             try
             {
-                map[tilex, tiley, level] = t;
+                map.SetPixel(tilex, tiley, t);
             }
             catch { }
             Refresh();
+        }
+
+        public Color GetTile(int tilex, int tiley)
+        {
+            try
+            {
+                return map.GetPixel(tilex, tiley);
+            }
+            catch { }
+            return Color.White;
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
@@ -159,8 +150,8 @@ namespace tilemapmaker
             int newmapposx;
             int newmapposy;
             GetMapPos(e, out newmapposx, out newmapposy);
-            camx += (int)((newmapposx-mapposx) * zoom);
-            camy += (int)((newmapposy-mapposy) * zoom);
+            camx += (int)((newmapposx - mapposx) * zoom);
+            camy += (int)((newmapposy - mapposy) * zoom);
 
             Refresh();
         }
@@ -171,19 +162,20 @@ namespace tilemapmaker
 
         public Image img;
 
-        
 
-        public event Action<DraggableMap, MouseEventArgs> RightClick;
-        public event Action<DraggableMap, MouseEventArgs> RightClickDrag;
 
-        Pen borderpen = new Pen(Brushes.Magenta, 10);
+        public event Action<PixelEditor, MouseEventArgs> RightClick;
+        public event Action<PixelEditor, MouseEventArgs> RightClickDrag;
+
+        Pen borderpen = new Pen(Brushes.Magenta, 0.5f);
         string text = "kami";
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            text = "x=" + mousex + " y=" + mousey + " tilex=" + (mousex / Tile.tilesize) + " tiley=" + (mousey / Tile.tilesize) + " level=" + level;
+            text = "x=" + mousex + " y=" + mousey + " tilex=" + (mousex  ) + " tiley=" + (mousey  );
 
             Graphics g = pevent.Graphics;
+            g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.FillRectangle(Brushes.Black, pevent.ClipRectangle);
 
@@ -191,7 +183,7 @@ namespace tilemapmaker
             g.ScaleTransform(zoom, zoom);
             borderpen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
 
-            g.DrawRectangle(borderpen, new Rectangle(0, 0, map.GetLength(0) * Tile.tilesize, map.GetLength(1) * Tile.tilesize));
+            g.DrawRectangle(borderpen, new Rectangle(0, 0, map.Width  , map.Height  ));
 
             if (img != null)
             {
@@ -204,46 +196,23 @@ namespace tilemapmaker
             ImageAttributes translucent = new ImageAttributes();
             translucent.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
-
-            for (int lvl = 0; lvl < map.GetLength(2); lvl++)
-            {
-                for (int x = 0; x < map.GetLength(0); x++)
-                {
-                    for (int y = 0; y < map.GetLength(1); y++)
-                    {
-                        if (map[x, y, lvl] != null)
-                        {
-                            Tile t = map[x, y, lvl];
-                            if (lvl != level)
-                            {
-                                g.DrawImage(t.GetBitmap(t.Surroundings(map, x,y,lvl), (uint)(Environment.TickCount / 250)),
-                                    new Rectangle(x * Tile.tilesize, y * Tile.tilesize, Tile.tilesize, Tile.tilesize),
-                                    0, 0, Tile.tilesize, Tile.tilesize, GraphicsUnit.Pixel, translucent);
-                            }
-                            else
-                            {
-                                g.DrawImage(t.GetBitmap(t.Surroundings(map, x, y, lvl), (uint)(Environment.TickCount / 250)), x * Tile.tilesize, y * Tile.tilesize);
-                            }
-                        }
-                    }
-                }
-            }
+            g.DrawImage(map, 0f, 0f, map.Width, map.Height);
 
             if (highlightTile != null)
             {
-                g.DrawRectangle(new Pen(Brushes.White, 3), 
+                g.DrawRectangle(new Pen(Brushes.White, 0.3f),
                     new Rectangle(
-                        highlightTile.Value.X * Tile.tilesize, 
-                        highlightTile.Value.Y * Tile.tilesize, 
-                        Tile.tilesize * highlightwidth, 
-                        Tile.tilesize * highlightheight));
+                        highlightTile.Value.X ,
+                        highlightTile.Value.Y ,
+                         highlightwidth,
+                         highlightheight));
 
-                g.DrawRectangle(Pens.Red, 
+                g.DrawRectangle(new Pen(Brushes.Red, 0.1f),
                     new Rectangle(
-                        highlightTile.Value.X * Tile.tilesize, 
-                        highlightTile.Value.Y * Tile.tilesize,
-                        Tile.tilesize * highlightwidth, 
-                        Tile.tilesize * highlightheight));
+                        highlightTile.Value.X ,
+                        highlightTile.Value.Y ,
+                          highlightwidth,
+                          highlightheight));
             }
 
             g.ScaleTransform(1 / zoom, 1 / zoom);

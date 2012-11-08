@@ -22,6 +22,7 @@
     <ClCompile Include="..\src\btileset.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\primitives.cpp" />
+    <ClCompile Include="..\src\scenariobasedscene.cpp" />
     <ClCompile Include="..\src\tilemapeditorscene.cpp" />
     <ClCompile Include="..\src\tilemapscene.cpp" />
     <ClCompile Include="..\src\utils.cpp" />
@@ -77,6 +78,8 @@
     <ClInclude Include="..\src\ordinarytexanimshader.h" />
     <ClInclude Include="..\src\primitives.h" />
     <ClInclude Include="..\src\resources_interface.h" />
+    <ClInclude Include="..\src\scenariobasedscene.h" />
+    <ClInclude Include="..\src\scenario_interface.h" />
     <ClInclude Include="..\src\scene_interface.h" />
     <ClInclude Include="..\src\shader_interface.h" />
     <ClInclude Include="..\src\simpletile.h" />

@@ -30,7 +30,15 @@ namespace tilemapmaker
             t.Start();
 
             draggableMap1.RightClick += new Action<DraggableMap, MouseEventArgs>(draggableMap1_RightClick);
+            draggableMap1.RightClickDrag += new Action<DraggableMap, MouseEventArgs>(draggableMap1_RightClickDrag);
             DragDropTools.EnableFileDrop(draggableMap1, x => x.ToList().ForEach(file => OpenFile(file)));
+        }
+
+        void draggableMap1_RightClickDrag(DraggableMap dmap, MouseEventArgs obj)
+        {
+            int x, y;
+            draggableMap1.GetMapPos(obj, out x, out y);
+            draggableMap1.PutTile(x / Tile.tilesize, y / Tile.tilesize, paintTile);
         }
 
         void draggableMap1_RightClick(DraggableMap dmap, MouseEventArgs obj)
@@ -61,31 +69,6 @@ namespace tilemapmaker
             tc_topLeft.TabPages.Add(name, name);
 
             DraggableMap dm = new DraggableMap();
-            dm.map = new Tile[img.Width / Tile.tilesize, img.Height / Tile.tilesize, 1];
-            dm.img = img;
-            dm.Dock = DockStyle.Fill;
-            dm.RightClick += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
-            {
-                int x, y;
-                dmap.GetMapPos(evt, out x, out y);
-
-                int tilex = x / Tile.tilesize;
-                int tiley = y / Tile.tilesize;
-                dmap.HighlightTile(tilex, tiley);
-
-                Bitmap b = new Bitmap(Tile.tilesize, Tile.tilesize);
-                using (Graphics g = Graphics.FromImage(b))
-                {
-                    g.DrawImage(
-                        dm.img,
-                        new Rectangle(0, 0, Tile.tilesize, Tile.tilesize),
-                        new Rectangle(tilex * Tile.tilesize, tiley * Tile.tilesize, Tile.tilesize, Tile.tilesize),
-                        GraphicsUnit.Pixel);
-                }
-                currentTile = new SimpleTile(b);
-
-
-            });
             tc_topLeft.TabPages[name].Controls.Add(dm);
 
             Button basicTile = new Button();
@@ -94,6 +77,101 @@ namespace tilemapmaker
             basicTile.Dock = DockStyle.Bottom;
 
             tc_topLeft.TabPages[name].Controls.Add(basicTile);
+
+            Button autoTile12 = new Button();
+            autoTile12.Click += new EventHandler((obj, evt) => {
+                AutoTile12 at12 = new AutoTile12();
+                DraggableMap dmap = ((Button)obj).Tag as DraggableMap;
+                
+                int x, y;
+                dmap.GetHighlightedTile(out x, out y);
+
+                for (int i = 0; i < AutoTile12.tileToRawTileIndex.Length; i++)
+                {
+                    Rectangle rect = AutoTile12.tileToRawTileIndex[i];
+                    SimpleTile st = GetSelectedTile(dmap, rect.X + x * Tile.tilesize, rect.Y + y * Tile.tilesize);
+                    at12.rawtiles[i] = st;
+                }
+
+                AddAutotile12(at12, at12);
+            });
+            autoTile12.Tag = dm;
+            autoTile12.Text = "Create Autotile";
+            autoTile12.Dock = DockStyle.Bottom;
+            autoTile12.Enabled = false;
+
+            tc_topLeft.TabPages[name].Controls.Add(autoTile12);
+
+            dm.map = new Tile[img.Width / Tile.tilesize, img.Height / Tile.tilesize, 1];
+            dm.img = img;
+            dm.Dock = DockStyle.Fill;
+            dm.RightClick += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
+            {
+                int x, y;
+                dmap.GetMapPos(evt, out x, out y);
+
+                SimpleTile st = GetSelectedTile(dmap, x, y);
+
+                currentTile = st;
+
+                if (dmap.highlightwidth == 3 && dmap.highlightheight == 4)
+                {
+                    autoTile12.Enabled = true;
+                }
+                else
+                {
+                    autoTile12.Enabled = false;
+                }
+            });
+            dm.RightClickDrag += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
+            {
+                int x, y;
+                dmap.GetMapPos(evt, out x, out y);
+
+                int tilex = x / Tile.tilesize;
+                int tiley = y / Tile.tilesize;
+
+                int htilex, htiley;
+                dmap.GetHighlightedTile(out htilex, out htiley);
+
+                dmap.HighlightTile(Math.Min(tilex, htilex), Math.Min(tiley, htiley));
+
+                int dx = Math.Max(Math.Abs(tilex - htilex + 1), 1);
+                int dy = Math.Max(Math.Abs(tiley - htiley + 1), 1);
+
+                dmap.highlightwidth = dx;
+                dmap.highlightheight = dy;
+
+                if (dx == 3 && dy == 4)
+                {
+                    autoTile12.Enabled = true;
+                }
+                else
+                {
+                    autoTile12.Enabled = false;
+                }
+
+            });
+
+        }
+
+        private static SimpleTile GetSelectedTile(DraggableMap dmap, int x, int y)
+        {
+            int tilex = x / Tile.tilesize;
+            int tiley = y / Tile.tilesize;
+            dmap.HighlightTile(tilex, tiley);
+
+            Bitmap b = new Bitmap(Tile.tilesize, Tile.tilesize);
+            using (Graphics g = Graphics.FromImage(b))
+            {
+                g.DrawImage(
+                    dmap.img,
+                    new Rectangle(0, 0, Tile.tilesize, Tile.tilesize),
+                    new Rectangle(tilex * Tile.tilesize, tiley * Tile.tilesize, Tile.tilesize, Tile.tilesize),
+                    GraphicsUnit.Pixel);
+            }
+            SimpleTile st = new SimpleTile(b);
+            return st;
         }
 
         void basicTile_Click(object sender, EventArgs e)
@@ -318,6 +396,7 @@ namespace tilemapmaker
                         {
                             PictureBox thepb = (PictureBox)o;
                             KeyValuePair<AutoTile94, int> theat = (KeyValuePair<AutoTile94, int>)thepb.Tag;
+                            if (selectedBasicTile == null) { return; }
                             thepb.Image = selectedBasicTile.GetBitmap(0, 0);
                             theat.Key.rawtiles[theat.Value] = selectedBasicTile;
                         });
@@ -344,6 +423,7 @@ namespace tilemapmaker
                         {
                             PictureBox thepb = (PictureBox)o;
                             KeyValuePair<AutoTile12, int> theat = (KeyValuePair<AutoTile12, int>)thepb.Tag;
+                            if (selectedBasicTile == null) { return; }
                             thepb.Image = selectedBasicTile.GetBitmap(0, 0);
                             theat.Key.rawtiles[theat.Value] = selectedBasicTile;
                         });
@@ -555,6 +635,12 @@ namespace tilemapmaker
                     }
                 }
             }
+        }
+
+        private void btn_makeCharacter_Click(object sender, EventArgs e)
+        {
+            CharacterMaker cm = new CharacterMaker();
+            cm.Show();
         }
 
 
