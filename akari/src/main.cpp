@@ -24,9 +24,11 @@ const char* title = "Dark Flame Master";
 int screenWidth = 800;
 int screenHeight = 600;
 SDL_Surface* screen;
+Uint32 time = 0;
 
 void run(boost::shared_ptr<scene_interface> scene)
 {
+	time = SDL_GetTicks();
 	scene->init(screen);
 	
     SDL_Event evt;
@@ -38,10 +40,15 @@ void run(boost::shared_ptr<scene_interface> scene)
         }
 
         scene->update();
+		
+		Uint32 now = SDL_GetTicks();
+		if (now - time > 15) {
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        scene->render();
-		SDL_GL_SwapBuffers();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			scene->render();
+			SDL_GL_SwapBuffers();
+			time = SDL_GetTicks();
+		}
 	}
 
 	scene->cleanup();
@@ -147,8 +154,30 @@ public:
 		tilelayer->setcamera(-playerobject->getx(), -playerobject->gety());
 	}
 
+	void updatefps()
+	{
+		const int mult = 10;
+		static float start = SDL_GetTicks();
+		static int ticks = 0;
+		static float fps = 0;
+		char msg[128];
+		sprintf(msg, "x=%d_y=%d_fps=%f", tilelayer->getx(), tilelayer->gety(), fps);
+
+		if (ticks % mult == 0)
+		{
+			fps = mult * 1000.0f/(SDL_GetTicks() - start);
+			start = SDL_GetTicks();
+		}
+
+		ticks++;
+
+		campos->settext(msg);
+	}
+
 	virtual void render()
 	{
+		updatefps();
+
 		static int a = 0;
 		glLoadIdentity();
 

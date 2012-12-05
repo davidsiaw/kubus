@@ -8,7 +8,7 @@ class mobilecharacterset : public objectset_interface
 public:
 	virtual std::string gettexturemap()
 	{
-		return "boy2.png";
+		return "rikkawalk.png";
 	}
 
 	virtual boost::shared_ptr<mobilecharacter> createobject(int id)

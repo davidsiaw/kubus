@@ -53,7 +53,7 @@ namespace tilemapmaker
         {
             int width = (int)(tile.width * png.Width);
             int height = (int)(tile.height * png.Height);
-            int left = (int)(tile.x1 * png.Width);
+            int Right = (int)(tile.x1 * png.Width);
             int top = (int)(tile.y3* png.Height);
 
             for (int i = 0; i < 4; i++)
@@ -61,7 +61,7 @@ namespace tilemapmaker
                 Bitmap b = new Bitmap(width, height);
                 using (Graphics g = Graphics.FromImage(b))
                 {
-                    g.DrawImage(png, new Rectangle(0, 0, width, height), new Rectangle(left + i * width, top, width, height), GraphicsUnit.Pixel);
+                    g.DrawImage(png, new Rectangle(0, 0, width, height), new Rectangle(Right + i * width, top, width, height), GraphicsUnit.Pixel);
                 }
                 this.bmp[i] = b;
             }
@@ -79,10 +79,10 @@ namespace tilemapmaker
 
     public enum SubTilePos
     {
-        TopRight,
-        BottomRight,
-        BottomLeft,
         TopLeft,
+        BottomLeft,
+        BottomRight,
+        TopRight,
     }
 
     public abstract class AutoTile : Tile
@@ -100,13 +100,13 @@ namespace tilemapmaker
         {
             switch (pos)
             {
-                case SubTilePos.TopRight:
-                    return (byte)(((surrounding >> 3) & 6) | (surrounding & 1));
-                case SubTilePos.BottomRight:
-                    return (byte)(((surrounding >> 4) & 6) | ((surrounding >> 1) & 1));
-                case SubTilePos.BottomLeft:
-                    return (byte)(((surrounding >> 5) & 6) | ((surrounding >> 2) & 1));
                 case SubTilePos.TopLeft:
+                    return (byte)(((surrounding >> 3) & 6) | (surrounding & 1));
+                case SubTilePos.BottomLeft:
+                    return (byte)(((surrounding >> 4) & 6) | ((surrounding >> 1) & 1));
+                case SubTilePos.BottomRight:
+                    return (byte)(((surrounding >> 5) & 6) | ((surrounding >> 2) & 1));
+                case SubTilePos.TopRight:
                     return (byte)(((surrounding >> 3) & 1) | ((surrounding >> 2) & 4) | ((surrounding >> 6) & 2));
             }
             throw new Exception("invalid pos value: " + pos);
@@ -173,17 +173,17 @@ namespace tilemapmaker
             var ats = new AutoTileSep()
             {
                 tr = posAndMaskToTile[
-                        (int)SubTilePos.TopRight,
-                        getCornerMask(SubTilePos.TopRight, surroundings)],
-                tl = posAndMaskToTile[
                         (int)SubTilePos.TopLeft,
                         getCornerMask(SubTilePos.TopLeft, surroundings)],
+                tl = posAndMaskToTile[
+                        (int)SubTilePos.TopRight,
+                        getCornerMask(SubTilePos.TopRight, surroundings)],
                 br = posAndMaskToTile[
-                        (int)SubTilePos.BottomRight,
-                        getCornerMask(SubTilePos.BottomRight, surroundings)],
-                bl = posAndMaskToTile[
                         (int)SubTilePos.BottomLeft,
-                        getCornerMask(SubTilePos.BottomLeft, surroundings)]
+                        getCornerMask(SubTilePos.BottomLeft, surroundings)],
+                bl = posAndMaskToTile[
+                        (int)SubTilePos.BottomRight,
+                        getCornerMask(SubTilePos.BottomRight, surroundings)]
             };
 
             if (!tileCache.ContainsKey(surroundings))
@@ -203,26 +203,26 @@ namespace tilemapmaker
                 {
                     g.DrawImage(
                         rawtiles[ats.tr].GetBitmap(surroundings, tick),
-                        corner[(int)SubTilePos.TopRight],
-                        corner[(int)SubTilePos.TopRight],
+                        corner[(int)SubTilePos.TopLeft],
+                        corner[(int)SubTilePos.TopLeft],
                         GraphicsUnit.Pixel);
 
                     g.DrawImage(
                         rawtiles[ats.br].GetBitmap(surroundings, tick),
-                        corner[(int)SubTilePos.BottomRight],
-                        corner[(int)SubTilePos.BottomRight],
+                        corner[(int)SubTilePos.BottomLeft],
+                        corner[(int)SubTilePos.BottomLeft],
                         GraphicsUnit.Pixel);
 
                     g.DrawImage(
                         rawtiles[ats.bl].GetBitmap(surroundings, tick),
-                        corner[(int)SubTilePos.BottomLeft],
-                        corner[(int)SubTilePos.BottomLeft],
+                        corner[(int)SubTilePos.BottomRight],
+                        corner[(int)SubTilePos.BottomRight],
                         GraphicsUnit.Pixel);
 
                     g.DrawImage(
                         rawtiles[ats.tl].GetBitmap(surroundings, tick),
-                        corner[(int)SubTilePos.TopLeft],
-                        corner[(int)SubTilePos.TopLeft],
+                        corner[(int)SubTilePos.TopRight],
+                        corner[(int)SubTilePos.TopRight],
                         GraphicsUnit.Pixel);
                 }
                 bitmapCache[ats].bmp[tick] = b;

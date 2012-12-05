@@ -52,7 +52,7 @@ namespace tilemapmaker
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
             {
                 dragging = true;
                 dragfromx = e.X;
@@ -61,18 +61,18 @@ namespace tilemapmaker
                 origcamx = camx;
                 origcamy = camy;
             }
-            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
             {
-                if (RightClick != null)
+                if (LeftClick != null)
                 {
-                    RightClick(this, e);
+                    LeftClick(this, e);
                 }
             }
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
             {
                 dragging = false;
             }
@@ -88,11 +88,11 @@ namespace tilemapmaker
                 camy = origcamy + e.Y - dragfromy;
             }
 
-            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
             {
-                if (RightClickDrag != null)
+                if (LeftClickDrag != null)
                 {
-                    RightClickDrag(this, e);
+                    LeftClickDrag(this, e);
                 }
             }
             GetMapPos(e, out mousex, out mousey);
@@ -173,8 +173,8 @@ namespace tilemapmaker
 
         
 
-        public event Action<DraggableMap, MouseEventArgs> RightClick;
-        public event Action<DraggableMap, MouseEventArgs> RightClickDrag;
+        public event Action<DraggableMap, MouseEventArgs> LeftClick;
+        public event Action<DraggableMap, MouseEventArgs> LeftClickDrag;
 
         Pen borderpen = new Pen(Brushes.Magenta, 10);
         string text = "kami";

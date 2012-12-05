@@ -29,19 +29,19 @@ namespace tilemapmaker
             t.Tick += new EventHandler((o, e) => draggableMap1.Refresh());
             t.Start();
 
-            draggableMap1.RightClick += new Action<DraggableMap, MouseEventArgs>(draggableMap1_RightClick);
-            draggableMap1.RightClickDrag += new Action<DraggableMap, MouseEventArgs>(draggableMap1_RightClickDrag);
+            draggableMap1.LeftClick += new Action<DraggableMap, MouseEventArgs>(draggableMap1_LeftClick);
+            draggableMap1.LeftClickDrag += new Action<DraggableMap, MouseEventArgs>(draggableMap1_LeftClickDrag);
             DragDropTools.EnableFileDrop(draggableMap1, x => x.ToList().ForEach(file => OpenFile(file)));
         }
 
-        void draggableMap1_RightClickDrag(DraggableMap dmap, MouseEventArgs obj)
+        void draggableMap1_LeftClickDrag(DraggableMap dmap, MouseEventArgs obj)
         {
             int x, y;
             draggableMap1.GetMapPos(obj, out x, out y);
             draggableMap1.PutTile(x / Tile.tilesize, y / Tile.tilesize, paintTile);
         }
 
-        void draggableMap1_RightClick(DraggableMap dmap, MouseEventArgs obj)
+        void draggableMap1_LeftClick(DraggableMap dmap, MouseEventArgs obj)
         {
             int x, y;
             draggableMap1.GetMapPos(obj, out x, out y);
@@ -66,17 +66,17 @@ namespace tilemapmaker
         {
             var img = Image.FromFile(filename);
             string name = Path.GetFileNameWithoutExtension(filename);
-            tc_topLeft.TabPages.Add(name, name);
+            tc_topRight.TabPages.Add(name, name);
 
             DraggableMap dm = new DraggableMap();
-            tc_topLeft.TabPages[name].Controls.Add(dm);
+            tc_topRight.TabPages[name].Controls.Add(dm);
 
             Button basicTile = new Button();
             basicTile.Click += new EventHandler(basicTile_Click);
             basicTile.Text = "Create Basic Tile";
             basicTile.Dock = DockStyle.Bottom;
 
-            tc_topLeft.TabPages[name].Controls.Add(basicTile);
+            tc_topRight.TabPages[name].Controls.Add(basicTile);
 
             Button autoTile12 = new Button();
             autoTile12.Click += new EventHandler((obj, evt) => {
@@ -100,12 +100,12 @@ namespace tilemapmaker
             autoTile12.Dock = DockStyle.Bottom;
             autoTile12.Enabled = false;
 
-            tc_topLeft.TabPages[name].Controls.Add(autoTile12);
+            tc_topRight.TabPages[name].Controls.Add(autoTile12);
 
             dm.map = new Tile[img.Width / Tile.tilesize, img.Height / Tile.tilesize, 1];
             dm.img = img;
             dm.Dock = DockStyle.Fill;
-            dm.RightClick += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
+            dm.LeftClick += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
             {
                 int x, y;
                 dmap.GetMapPos(evt, out x, out y);
@@ -123,7 +123,7 @@ namespace tilemapmaker
                     autoTile12.Enabled = false;
                 }
             });
-            dm.RightClickDrag += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
+            dm.LeftClickDrag += new Action<DraggableMap, MouseEventArgs>((dmap, evt) =>
             {
                 int x, y;
                 dmap.GetMapPos(evt, out x, out y);

@@ -30,7 +30,6 @@ void Init3D(int screenWidth, int screenHeight) {
 
     glViewport(0, 0, screenWidth, screenHeight);
 
-
 	glMatrixMode(GL_PROJECTION);						// Select The Projection Matrix
 	glLoadIdentity();									// Reset The Projection Matrix
 
@@ -55,6 +54,7 @@ void Init3D(int screenWidth, int screenHeight) {
 
 	glEnable (GL_ALPHA_TEST); 
 	glAlphaFunc (GL_GREATER, 0);
+
 }
 
 void glEnable2D(float camerax, float cameray)

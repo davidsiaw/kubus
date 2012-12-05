@@ -33,7 +33,7 @@ namespace tilemapmaker
 
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
             {
                 dragging = true;
                 dragfromx = e.X;
@@ -42,18 +42,18 @@ namespace tilemapmaker
                 origcamx = camx;
                 origcamy = camy;
             }
-            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
             {
-                if (RightClick != null)
+                if (LeftClick != null)
                 {
-                    RightClick(this, e);
+                    LeftClick(this, e);
                 }
             }
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
             {
                 dragging = false;
             }
@@ -69,17 +69,22 @@ namespace tilemapmaker
                 camy = origcamy + e.Y - dragfromy;
             }
 
-            if ((e.Button & System.Windows.Forms.MouseButtons.Right) != 0)
+            if ((e.Button & System.Windows.Forms.MouseButtons.Left) != 0)
             {
-                if (RightClickDrag != null)
+                if (LeftClickDrag != null)
                 {
-                    RightClickDrag(this, e);
+                    LeftClickDrag(this, e);
                 }
             }
             GetMapPos(e, out mousex, out mousey);
             Refresh();
         }
 
+        public Action<Graphics, int, int> drawMouseUnderlay
+        {
+            get;
+            set;
+        }
 
         public void GetMapPos(MouseEventArgs e, out int mapposx, out int mapposy)
         {
@@ -119,6 +124,18 @@ namespace tilemapmaker
             }
             catch { }
             Refresh();
+        }
+
+        public void ApplyMouseUnderlay()
+        {
+            if (drawMouseUnderlay != null)
+            {
+                using (Graphics g = Graphics.FromImage(map))
+                {
+                    g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+                    drawMouseUnderlay(g, mousex, mousey);
+                }
+            }
         }
 
         public Color GetTile(int tilex, int tiley)
@@ -164,11 +181,13 @@ namespace tilemapmaker
 
 
 
-        public event Action<PixelEditor, MouseEventArgs> RightClick;
-        public event Action<PixelEditor, MouseEventArgs> RightClickDrag;
+        public event Action<PixelEditor, MouseEventArgs> LeftClick;
+        public event Action<PixelEditor, MouseEventArgs> LeftClickDrag;
 
         Pen borderpen = new Pen(Brushes.Magenta, 0.5f);
         string text = "kami";
+
+        public bool ShowTileArea { get; set; }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
@@ -179,7 +198,24 @@ namespace tilemapmaker
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             g.FillRectangle(Brushes.Black, pevent.ClipRectangle);
 
+
             g.TranslateTransform(camx, camy);
+
+            Brush darkgray = new SolidBrush(Color.FromArgb(80, Color.White));
+            Brush gray = new SolidBrush(Color.FromArgb(64, Color.White));
+
+            Region oldclip = g.Clip;
+            g.Clip = new Region(new RectangleF(0, 0, map.Width * zoom, map.Height * zoom));
+            int transparenttilesize = 16;
+            for (int x = 0; x < map.Width * zoom; x += transparenttilesize)
+            {
+                for (int y = 0; y < map.Height * zoom; y += transparenttilesize)
+                {
+                    g.FillRectangle((((x + y) / transparenttilesize) % 2) == 0 ? darkgray : gray, new Rectangle(x, y, transparenttilesize, transparenttilesize));
+                }
+            }
+            g.Clip = oldclip;
+
             g.ScaleTransform(zoom, zoom);
             borderpen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
 
@@ -196,6 +232,11 @@ namespace tilemapmaker
             ImageAttributes translucent = new ImageAttributes();
             translucent.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 
+            if (ShowTileArea)
+            {
+                g.FillRectangle(new SolidBrush(Color.FromArgb(40, Color.White)), new Rectangle((map.Width - Tile.tilesize) / 2, map.Height - Tile.tilesize, Tile.tilesize, Tile.tilesize));
+            }
+            
             g.DrawImage(map, 0f, 0f, map.Width, map.Height);
 
             if (highlightTile != null)
@@ -215,10 +256,17 @@ namespace tilemapmaker
                           highlightheight));
             }
 
+            pevent.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+
+            if (drawMouseUnderlay != null)
+            {
+                drawMouseUnderlay(pevent.Graphics, mousex, mousey);
+            }
+
             g.ScaleTransform(1 / zoom, 1 / zoom);
             g.TranslateTransform(-camx, -camy);
 
-            g.DrawString(text, new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.SansSerif), 10), Brushes.White, new PointF(2, 2));
+            //g.DrawString(text, new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.SansSerif), 10), Brushes.White, new PointF(2, 2));
 
         }
 

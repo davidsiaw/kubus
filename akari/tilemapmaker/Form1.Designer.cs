@@ -39,7 +39,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.tc_topLeft = new System.Windows.Forms.TabControl();
+            this.tc_topRight = new System.Windows.Forms.TabControl();
             this.tab_file = new System.Windows.Forms.TabPage();
             this.btn_makefont = new System.Windows.Forms.Button();
             this.btn_loadtiles = new System.Windows.Forms.Button();
@@ -67,7 +67,7 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.tc_topLeft.SuspendLayout();
+            this.tc_topRight.SuspendLayout();
             this.tab_file.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -203,7 +203,7 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.tc_topLeft);
+            this.splitContainer2.Panel1.Controls.Add(this.tc_topRight);
             // 
             // splitContainer2.Panel2
             // 
@@ -212,17 +212,17 @@
             this.splitContainer2.SplitterDistance = 274;
             this.splitContainer2.TabIndex = 1;
             // 
-            // tc_topLeft
+            // tc_topRight
             // 
-            this.tc_topLeft.Alignment = System.Windows.Forms.TabAlignment.Right;
-            this.tc_topLeft.Controls.Add(this.tab_file);
-            this.tc_topLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tc_topLeft.Location = new System.Drawing.Point(0, 0);
-            this.tc_topLeft.Multiline = true;
-            this.tc_topLeft.Name = "tc_topLeft";
-            this.tc_topLeft.SelectedIndex = 0;
-            this.tc_topLeft.Size = new System.Drawing.Size(327, 274);
-            this.tc_topLeft.TabIndex = 0;
+            this.tc_topRight.Alignment = System.Windows.Forms.TabAlignment.Left;
+            this.tc_topRight.Controls.Add(this.tab_file);
+            this.tc_topRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tc_topRight.Location = new System.Drawing.Point(0, 0);
+            this.tc_topRight.Multiline = true;
+            this.tc_topRight.Name = "tc_topRight";
+            this.tc_topRight.SelectedIndex = 0;
+            this.tc_topRight.Size = new System.Drawing.Size(327, 274);
+            this.tc_topRight.TabIndex = 0;
             // 
             // tab_file
             // 
@@ -384,7 +384,7 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.tc_topLeft.ResumeLayout(false);
+            this.tc_topRight.ResumeLayout(false);
             this.tab_file.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
@@ -398,7 +398,7 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl tc_topLeft;
+        private System.Windows.Forms.TabControl tc_topRight;
         private System.Windows.Forms.TabPage tab_file;
         private System.Windows.Forms.Button btn_loadtilemap;
         private DraggableMap draggableMap1;

@@ -85,16 +85,16 @@ public:
 			q.e[2].numtiles = 1;
 			q.e[3].numtiles = 1;
 
-			q.e[0].t.x = 0.75;
+			q.e[0].t.x = 0.0;
 			q.e[0].t.y = dir * 0.25;
 
-			q.e[1].t.x = 0.75;
+			q.e[1].t.x = 0.0;
 			q.e[1].t.y = dir * 0.25 + 0.25;
 
-			q.e[2].t.x = 1.0;
+			q.e[2].t.x = 0.25;
 			q.e[2].t.y = dir * 0.25 + 0.25;
 
-			q.e[3].t.x = 1.0;
+			q.e[3].t.x = 0.25;
 			q.e[3].t.y = dir * 0.25;
 		}
 		else if (action == WALK)
