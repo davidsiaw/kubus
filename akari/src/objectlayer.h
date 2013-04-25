@@ -162,7 +162,7 @@ public:
 	void render(int tile, float transparency = 1.0f)
 	{
 		glEnable2D(camerax,cameray);
-		if (vbuf != NULL)
+		if (vbuf)
 		{
 			vbuf->Render(tile, transparency);
 		}

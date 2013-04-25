@@ -34,7 +34,8 @@ public:
 		for (int x=xstart;x!=xend;x+=xinc)
 		for (int y=ystart;y!=yend;y+=yinc)
 		{
-			std::swap(get(x,y,emptyFill()),get(x-dx,y-dy,emptyFill()));
+			T item = emptyFill();
+			std::swap(get(x,y,item),get(x-dx,y-dy,item));
 		}
 	}
 

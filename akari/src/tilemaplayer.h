@@ -46,7 +46,7 @@ class tilemaplayer
 			int locationx = anchorx/32 + (x - buffers.getcolumns() / 2) * w;
 			int locationy = anchory/32 + (y - buffers.getrows() / 2) * h;
 
-			if (buffers(x,y) == NULL)
+			if (!buffers(x,y))
 			{
 				tc = boost::shared_ptr<tilecomposition>(new tilecomposition(locationx, locationy, w+1, h+1, resources, mapdesc));
 				buffers(x, y) = boost::shared_ptr<vertexbuffer>(new vertexbuffer(shader, tc));

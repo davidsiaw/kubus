@@ -67,7 +67,7 @@ void glEnable2D(float camerax, float cameray)
 	glPushMatrix();
 	glLoadIdentity();
 
-	glOrtho(0-camerax, vPort[2]-camerax, vPort[3]-cameray, 0-cameray, SHRT_MIN, SHRT_MAX);
+	glOrtho(0-camerax, vPort[2]-camerax, vPort[3]-cameray, 0-cameray, -10000, 10000);
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();

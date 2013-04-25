@@ -55,6 +55,10 @@ void scenariobasedscene::cleanup()
 
 void scenariobasedscene::event(SDL_Event* evt)
 {
+	if (evt->type == SDL_QUIT)
+	{
+		exit(0);
+	}
 }
 
 bool scenariobasedscene::running()

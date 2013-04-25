@@ -90,7 +90,7 @@ public:
 		{
 			vbuf = boost::shared_ptr<vertexbuffer>();
 		}
-		if (vbuf != NULL && vbuf->NumObjects() >= str.size())
+		if (vbuf && vbuf->NumObjects() >= str.size())
 		{
 			float pos = 0;
 			for(size_t i=0; i<str.size(); i++)
@@ -123,7 +123,7 @@ public:
 
 	void render(float transparency = 1.0f)
 	{
-		if (vbuf != NULL)
+		if (vbuf)
 		{
 			glTranslatef(0,0,1000);
 			glPushMatrix();

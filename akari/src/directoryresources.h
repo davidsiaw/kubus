@@ -28,7 +28,7 @@ public:
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
 
-			glTexImage2D(GL_TEXTURE_2D, 0, 4, tex->w, tex->h, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, tex->pixels);
+			glTexImage2D(GL_TEXTURE_2D, 0, 4, tex->w, tex->h, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, tex->pixels);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
