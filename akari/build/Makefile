@@ -13,6 +13,5 @@ all:
 macos:
 	$(CLANGXX) $(FLAGS) $(SRC) $(INC) $(LIBS) $(MACLIBS) $(OUTPUT) 
 
-
 clean:
-
+	rm akari
