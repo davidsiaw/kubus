@@ -1,6 +1,6 @@
 CLANGXX=clang++
 CXX=g++
-FLAGS=-g -std=c++11
+FLAGS=-g -std=gnu++0x
 SRC=`ls ../src/*.cpp`
 INC=`../../libs/sources/build/bin/sdl-config --cflags` -I../src/ -I../../libs/sources/boost/ -I../../libs/sources/build/include
 LIBS=`../../libs/sources/build/bin/sdl-config --libs` -L../../libs/sources/build/lib -lSDL_ttf -lfreetype -lSDL_image -lpng -lz -lX11 -lXmu -lXi -lGL -lGLU -lXext -lGLEW
