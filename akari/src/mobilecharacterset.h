@@ -11,9 +11,9 @@ public:
 		return "rikkawalk.png";
 	}
 
-	virtual boost::shared_ptr<mobilecharacter> createobject(int id)
+	virtual std::tr1::shared_ptr<mobilecharacter> createobject(int id)
 	{
-		return boost::shared_ptr<mobilecharacter>(new mobilecharacter());
+		return std::tr1::shared_ptr<mobilecharacter>(new mobilecharacter());
 	}
 };
 

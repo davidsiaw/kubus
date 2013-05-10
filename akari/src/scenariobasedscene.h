@@ -1,17 +1,17 @@
 #ifndef SCENARIOBASEDSCENE_H
 #define SCENARIOBASEDSCENE_H
 
-#include <boost/shared_ptr.hpp>
+#include <tr1/memory>
 
 #include "scene_interface.h"
 #include "scenario_interface.h"
 
 class scenariobasedscene : public scene_interface
 {
-	boost::shared_ptr<scenario_interface> scenario;
+	std::tr1::shared_ptr<scenario_interface> scenario;
 
 public:
-	scenariobasedscene(boost::shared_ptr<scenario_interface> scenario);
+	scenariobasedscene(std::tr1::shared_ptr<scenario_interface> scenario);
 	~scenariobasedscene();
 	virtual void init(SDL_Surface* video);
 	virtual void update();

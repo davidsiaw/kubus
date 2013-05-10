@@ -9,8 +9,8 @@
 
 class directoryresources : public resources_interface
 {
-	cache<boost::shared_ptr<tileset_interface>> tilesets;
-	cache<boost::shared_ptr<font_interface>> fonts;
+	cache<std::tr1::shared_ptr<tileset_interface>> tilesets;
+	cache<std::tr1::shared_ptr<font_interface>> fonts;
 	cache<GLuint> images;
 	std::string directory;
 
@@ -22,7 +22,7 @@ public:
 		return images.get(directory + identifier, [&]()->GLuint
 		{
 			glActiveTexture(GL_TEXTURE0);
-			boost::shared_ptr<SDL_Surface> tex(IMG_Load((directory + identifier).c_str()), SDL_FreeSurface);
+			std::tr1::shared_ptr<SDL_Surface> tex(IMG_Load((directory + identifier).c_str()), SDL_FreeSurface);
 
 			GLuint texture;
 			glGenTextures(1, &texture);
@@ -37,25 +37,25 @@ public:
 		});
 	}
 
-	virtual boost::shared_ptr<tileset_interface> gettileset(std::string identifier)
+	virtual std::tr1::shared_ptr<tileset_interface> gettileset(std::string identifier)
 	{
-		return tilesets.get(directory + identifier, [&]()->boost::shared_ptr<tileset_interface>
+		return tilesets.get(directory + identifier, [&]()->std::tr1::shared_ptr<tileset_interface>
 		{
 			FILE* basictilesfile = fopen((directory + identifier + ".basictiles").c_str(), "rb");
 			FILE* tilesfile = fopen((directory + identifier + ".tiles").c_str(), "rb");
-			return boost::shared_ptr<tileset_interface>(new btileset(basictilesfile, tilesfile, identifier + ".png"));
+			return std::tr1::shared_ptr<tileset_interface>(new btileset(basictilesfile, tilesfile, identifier + ".png"));
 			fclose(basictilesfile);
 			fclose(tilesfile);
 		});
 	}
 
 
-	virtual boost::shared_ptr<font_interface> getfont(std::string identifier)
+	virtual std::tr1::shared_ptr<font_interface> getfont(std::string identifier)
 	{
-		return fonts.get(directory + identifier, [&]()->boost::shared_ptr<font_interface>
+		return fonts.get(directory + identifier, [&]()->std::tr1::shared_ptr<font_interface>
 		{
 			FILE* fontfile = fopen((directory + identifier + ".font").c_str(), "rb");
-			return boost::shared_ptr<font_interface>(new bitmapfont(fontfile, identifier + ".png"));
+			return std::tr1::shared_ptr<font_interface>(new bitmapfont(fontfile, identifier + ".png"));
 			fclose(fontfile);
 		});
 	}

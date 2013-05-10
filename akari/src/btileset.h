@@ -2,7 +2,7 @@
 #define BTILESET_H
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <tr1/memory>
 #include "tileset_interface.h"
 #include "autotile.h"
 #include "simpletile.h"
@@ -15,7 +15,7 @@ class btileset : public tileset_interface
 	typedef unsigned char (*getcornermaskfunc)(unsigned char);
 
 	boost::shared_array<tileinfo> tinfo;
-	std::vector<boost::shared_ptr<tile_interface>> tiles;
+	std::vector<std::tr1::shared_ptr<tile_interface>> tiles;
 	std::string texmap;
 
 	const static std::array<tilecorner, 4> autotile12map;
@@ -65,7 +65,7 @@ public:
 			{
 				int idx;
 				fread(&idx, sizeof(int), 1, tilesfile);
-				tiles.push_back(boost::shared_ptr<tile_interface>(new simpletile(idx)));
+				tiles.push_back(std::tr1::shared_ptr<tile_interface>(new simpletile(idx)));
 			}
 			else if (type == AUTOTILE12 || type == AUTOTILE94)
 			{
@@ -90,7 +90,7 @@ public:
 					posmap = autotile94map;
 				}
 
-				tiles.push_back(boost::shared_ptr<tile_interface>(new autotile(rawtiles, posmap, type)));
+				tiles.push_back(std::tr1::shared_ptr<tile_interface>(new autotile(rawtiles, posmap, type)));
 			}
 		}
 	}

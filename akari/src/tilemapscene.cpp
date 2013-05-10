@@ -1,12 +1,12 @@
 #include <string>
 #include <vector>
 
-#include "boost/shared_ptr.hpp"
+#include <tr1/memory>
 #include "boost/shared_array.hpp"
 #include "textlayer.h"
 #include "tilemapscene.h"
 
-tilemapscene::tilemapscene(boost::shared_ptr<resources_interface> resources, boost::shared_ptr<mapdesc_interface> mapdesc, boost::shared_ptr<font_interface> font)
+tilemapscene::tilemapscene(std::tr1::shared_ptr<resources_interface> resources, std::tr1::shared_ptr<mapdesc_interface> mapdesc, std::tr1::shared_ptr<font_interface> font)
 	: shader(new ordinarytexanimshader()), 
 	font(font),
 	tilelayer(new tilemaplayer(shader, resources, mapdesc,800,600)),

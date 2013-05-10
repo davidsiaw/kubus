@@ -2,7 +2,7 @@
 #define TEXTLAYER_H
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <tr1/memory>
 #include "font_interface.h"
 #include "vertexbuffer.h"
 #include "composition_interface.h"
@@ -14,10 +14,10 @@ class textlayer
 	class textcomposition : public composition_interface
 	{
 		std::vector<quad> quads;
-		boost::shared_ptr<font_interface> font;
+		std::tr1::shared_ptr<font_interface> font;
 		GLuint texturemap;
 	public:
-		textcomposition(GLuint texturemap, boost::shared_ptr<font_interface> font, std::string text)
+		textcomposition(GLuint texturemap, std::tr1::shared_ptr<font_interface> font, std::string text)
 			: font(font), texturemap(texturemap)
 		{
 			float pos = 0;
@@ -73,13 +73,13 @@ class textlayer
 		}
 	};
 
-	boost::shared_ptr<vertexbuffer> vbuf;
-	boost::shared_ptr<font_interface> font;
-	boost::shared_ptr<resources_interface> res;
-	boost::shared_ptr<texanimshader_interface> shader;
+	std::tr1::shared_ptr<vertexbuffer> vbuf;
+	std::tr1::shared_ptr<font_interface> font;
+	std::tr1::shared_ptr<resources_interface> res;
+	std::tr1::shared_ptr<texanimshader_interface> shader;
 
 public:
-	textlayer(boost::shared_ptr<texanimshader_interface> shader, boost::shared_ptr<resources_interface> res, boost::shared_ptr<font_interface> font) 
+	textlayer(std::tr1::shared_ptr<texanimshader_interface> shader, std::tr1::shared_ptr<resources_interface> res, std::tr1::shared_ptr<font_interface> font) 
 		: font(font), res(res), shader(shader)
 	{
 	}
@@ -88,7 +88,7 @@ public:
 	{
 		if (str.size() == 0)
 		{
-			vbuf = boost::shared_ptr<vertexbuffer>();
+			vbuf = std::tr1::shared_ptr<vertexbuffer>();
 		}
 		if (vbuf && vbuf->NumObjects() >= str.size())
 		{
@@ -116,8 +116,8 @@ public:
 		}
 		else
 		{
-			boost::shared_ptr<textcomposition> composition(new textcomposition(res->getimage(font->gettexturemap()), font, str));
-			vbuf = boost::shared_ptr<vertexbuffer>(new vertexbuffer(shader, composition));
+			std::tr1::shared_ptr<textcomposition> composition(new textcomposition(res->getimage(font->gettexturemap()), font, str));
+			vbuf = std::tr1::shared_ptr<vertexbuffer>(new vertexbuffer(shader, composition));
 		}
 	}
 
