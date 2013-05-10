@@ -8,7 +8,7 @@ MACLIBS= -stdlib=libc++ -framework opengl
 OUTPUT=-o akari
 
 all:
-	$(CXX) -v $(FLAGS) $(SRC) $(INC) $(LIBS) $(OUTPUT)
+	$(CXX) $(FLAGS) $(SRC) $(INC) $(LIBS) $(OUTPUT)
 
 macos:
 	$(CLANGXX) $(FLAGS) $(SRC) $(INC) $(LIBS) $(MACLIBS) $(OUTPUT) 
