@@ -3,7 +3,7 @@ language: cpp
 compiler:
   - gcc
 
-before-install:
+before_install:
   - sudo apt-get libglu1-mesa-dev libgl1-mesa-dev libxmu-dev libxi-dev libxext-dev libx11-dev xorg-x11-devel x11-devel
 
 script:
