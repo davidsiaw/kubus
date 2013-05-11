@@ -5,12 +5,14 @@
 #include "resources_interface.h"
 #include "bitmapfont.h"
 #include "btileset.h"
+#include "mobilecharacterset.h"
 #include "cache.h"
 
 class directoryresources : public resources_interface
 {
 	cache<boost::shared_ptr<tileset_interface>> tilesets;
 	cache<boost::shared_ptr<font_interface>> fonts;
+	cache<boost::shared_ptr<objectset_interface>> charmaps;
 	cache<GLuint> images;
 	std::string directory;
 
@@ -49,7 +51,6 @@ public:
 		});
 	}
 
-
 	virtual boost::shared_ptr<font_interface> getfont(std::string identifier)
 	{
 		return fonts.get(directory + identifier, [&]()->boost::shared_ptr<font_interface>
@@ -60,6 +61,13 @@ public:
 		});
 	}
 
+	virtual boost::shared_ptr<objectset_interface> getcharmap(std::string identifier)
+	{
+		return charmaps.get(directory + identifier, [&]()->boost::shared_ptr<objectset_interface>
+		{
+			return boost::shared_ptr<objectset_interface>(new mobilecharacterset(directory + identifier));
+		});
+	}
 };
 
 #endif // DIRECTORYRESOURCES_H
