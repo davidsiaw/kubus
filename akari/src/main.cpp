@@ -98,6 +98,10 @@ public:
 	}
 };
 
+class controller_interface 
+{
+
+};
 
 class myscenario : public scenario_interface
 {
@@ -121,20 +125,26 @@ class myscenario : public scenario_interface
 	}
 
 public:
-	myscenario(std::tr1::shared_ptr<resources_interface> resources, std::tr1::shared_ptr<mapdesc_interface> mapdesc, std::tr1::shared_ptr<font_interface> font) :
+	myscenario(
+			std::tr1::shared_ptr<resources_interface> resources, 
+			std::tr1::shared_ptr<mapdesc_interface> mapdesc, 
+			std::tr1::shared_ptr<font_interface> font,
+			std::tr1::shared_ptr<objectset_interface> charmap) :
+			
+
 		shader(new ordinarytexanimshader()), 
 		font(font),
 		tilelayer(new tilemaplayer(shader, resources, mapdesc,800,600)),
 		campos(new textlayer(shader, resources, font)),
-		objectset(new mobilecharacterset()),
+		objectset(charmap),
 		objects(new objectlayer(shader, resources, objectset, 800, 600))
 	{
-		playerobject = addobject(1);
+		playerobject = addobject(4);
 
 		auto anotherobject = addobject(1);
-		anotherobject->setlocation(50,50);
+		anotherobject->setlocation(400,50);
+		anotherobject->setdirection(DOWN);
 		objects->updateobject(anotherobject);
-
 	}
 
 	virtual void setresolution(int width, int height)
@@ -197,6 +207,11 @@ public:
 
 	virtual void commandcharacter(std::tr1::shared_ptr<mobilecharacter> character, objectdirection dir, characteraction act)
 	{
+		if ((SDL_GetTicks() - character->getlastupdated()) < 30)
+		{
+			return;
+		}
+		character->setlastupdated(SDL_GetTicks());
 		int dx=0;
 		int dy=0;
 		const int walkspeed = 2;
@@ -254,12 +269,15 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	std::tr1::shared_ptr<directoryresources> dirres(new directoryresources("/home/david/kubus/akari/res/"));
+
+	std::tr1::shared_ptr<directoryresources> dirres(new directoryresources("../res/"));
 	std::tr1::shared_ptr<mapdesc_interface> mapd(new mymapdesc());
 	std::tr1::shared_ptr<font_interface> font = dirres->getfont("myfont");
+	std::tr1::shared_ptr<objectset_interface> charmap = dirres->getcharmap("maincm");
 
-	std::tr1::shared_ptr<scenario_interface> scenario(new myscenario(dirres, mapd, font));
+	std::tr1::shared_ptr<scenario_interface> scenario(new myscenario(dirres, mapd, font, charmap));
 	std::tr1::shared_ptr<scenariobasedscene> scene(new scenariobasedscene(scenario));
+
 	run(scene);
 
 

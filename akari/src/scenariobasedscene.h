@@ -22,4 +22,4 @@ public:
 };
 
 
-#endif // TILEMAPSCENE_H
+#endif // SCENARIOBASEDSCENE_H

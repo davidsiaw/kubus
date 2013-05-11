@@ -2,7 +2,7 @@
 
 // maps from the corner and mask to the rawtile
 
-const std::array<tilecorner, 4> btileset::autotile12map = 
+const std::tr1::array<tilecorner, 4> btileset::autotile12map = 
 {
 	{
 		{{10,  0,  1,  2,  6,  7,  9,  8}},
@@ -12,7 +12,7 @@ const std::array<tilecorner, 4> btileset::autotile12map =
 	}
 };
 
-const std::array<tilecorner, 4> btileset::autotile94map = 
+const std::tr1::array<tilecorner, 4> btileset::autotile94map = 
 {
 	{
 		{{ 0,  0,  1,  2,  6,  7,  9,  8}},
@@ -42,7 +42,7 @@ unsigned char topleftcornermask(unsigned char surrounding)
 	return (((surrounding >> 3) & 1) | ((surrounding >> 2) & 4) | ((surrounding >> 6) & 2));
 }
 
-const std::array<btileset::getcornermaskfunc, 4> btileset::cornermaskfuncs = 
+const std::tr1::array<btileset::getcornermaskfunc, 4> btileset::cornermaskfuncs = 
 {
 	toprightcornermask,
 	bottomrightcornermask,

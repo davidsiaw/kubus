@@ -5,6 +5,7 @@
 #include "object_interface.h"
 #include "objectdirection.h"
 #include "characteraction.h"
+#include "charmapinfo.h"
 
 
 class mobilecharacter : public object_interface
@@ -14,13 +15,12 @@ class mobilecharacter : public object_interface
 	int x;
 	int y;
 
-	int offsetx;
-	int offsety;
+	charmapinformation info;
 
 	int id;
 
 public:
-	mobilecharacter() : id(-1), x(0), y(0), offsetx((-48+32)/2), offsety(-64+32/2), dir(UP), action(STAND)
+	mobilecharacter(charmapinformation info) : id(-1), x(0), y(0), info(info), dir(UP), action(STAND)
 	{ }
 
 	void setaction(characteraction action)
@@ -66,12 +66,12 @@ public:
 
 	virtual quad getcurrentquad()
 	{
-		quad q = MakeQuad(x + offsetx,y + offsety,48,64);
+		quad q = MakeQuad(x + info.xoffset,y + info.yoffset,info.xpixsize,info.ypixsize);
 		
-		q.e[0].tileOffset = 0.25;
-		q.e[1].tileOffset = 0.25;
-		q.e[2].tileOffset = 0.25;
-		q.e[3].tileOffset = 0.25;
+		q.e[0].tileOffset = info.xsize;
+		q.e[1].tileOffset = info.xsize;
+		q.e[2].tileOffset = info.xsize;
+		q.e[3].tileOffset = info.xsize;
 
 		q.e[0].v.z = 10 + y/100.0;
 		q.e[1].v.z = 10 + y/100.0;
@@ -85,36 +85,36 @@ public:
 			q.e[2].numtiles = 1;
 			q.e[3].numtiles = 1;
 
-			q.e[0].t.x = 0.0;
-			q.e[0].t.y = dir * 0.25;
+			q.e[0].t.x = info.xstart;
+			q.e[0].t.y = info.ystart + dir * info.ysize;
 
-			q.e[1].t.x = 0.0;
-			q.e[1].t.y = dir * 0.25 + 0.25;
+			q.e[1].t.x = info.xstart;
+			q.e[1].t.y = info.ystart + dir * info.ysize + info.ysize;
 
-			q.e[2].t.x = 0.25;
-			q.e[2].t.y = dir * 0.25 + 0.25;
+			q.e[2].t.x = info.xstart + info.xsize;
+			q.e[2].t.y = info.ystart + dir * info.ysize + info.ysize;
 
-			q.e[3].t.x = 0.25;
-			q.e[3].t.y = dir * 0.25;
+			q.e[3].t.x = info.xstart + info.xsize;
+			q.e[3].t.y = info.ystart + dir * info.ysize;
 		}
 		else if (action == WALK)
 		{
-			q.e[0].numtiles = 4;
-			q.e[1].numtiles = 4;
-			q.e[2].numtiles = 4;
-			q.e[3].numtiles = 4;
+			q.e[0].numtiles = info.numtiles;
+			q.e[1].numtiles = info.numtiles;
+			q.e[2].numtiles = info.numtiles;
+			q.e[3].numtiles = info.numtiles;
 
-			q.e[0].t.x = 0;
-			q.e[0].t.y = dir * 0.25;
+			q.e[0].t.x = info.xstart;
+			q.e[0].t.y = info.ystart + dir * info.ysize;
 
-			q.e[1].t.x = 0;
-			q.e[1].t.y = dir * 0.25 + 0.25;
+			q.e[1].t.x = info.xstart;
+			q.e[1].t.y = info.ystart + dir * info.ysize + info.ysize;
 
-			q.e[2].t.x = 0.25;
-			q.e[2].t.y = dir * 0.25 + 0.25;
+			q.e[2].t.x = info.xstart + info.xsize;
+			q.e[2].t.y = info.ystart + dir * info.ysize + info.ysize;
 
-			q.e[3].t.x = 0.25;
-			q.e[3].t.y = dir * 0.25;
+			q.e[3].t.x = info.xstart + info.xsize;
+			q.e[3].t.y = info.ystart + dir * info.ysize;
 		}
 
 

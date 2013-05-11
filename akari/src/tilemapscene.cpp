@@ -11,7 +11,7 @@ tilemapscene::tilemapscene(std::tr1::shared_ptr<resources_interface> resources, 
 	font(font),
 	tilelayer(new tilemaplayer(shader, resources, mapdesc,800,600)),
 	campos(new textlayer(shader, resources, font)),
-	objectset(new mobilecharacterset()),
+	objectset(new mobilecharacterset("rikkawalk.png")),
 	objects(new objectlayer(shader, resources, objectset, 800, 600)),
 	playerobject(objectset->createobject(1)),
 	otherobject(objectset->createobject(1))

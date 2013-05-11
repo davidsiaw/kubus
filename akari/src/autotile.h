@@ -1,7 +1,7 @@
 #ifndef AUTOTILE_H
 #define AUTOTILE_H
 
-#include <array>
+#include <tr1/array>
 #include <boost/shared_array.hpp>
 #include "tile_interface.h"
 
@@ -13,11 +13,11 @@ struct tilecorner
 class autotile : public tile_interface
 {
 	boost::shared_array<int> rawtiles;
-	std::array<tilecorner, 4> posAndMaskToTile;
+	std::tr1::array<tilecorner, 4> posAndMaskToTile;
 	tile_type type;
 
 public:
-	autotile(boost::shared_array<int> rawtiles, std::array<tilecorner, 4> posAndMaskToTile, tile_type type) : 
+	autotile(boost::shared_array<int> rawtiles, std::tr1::array<tilecorner, 4> posAndMaskToTile, tile_type type) : 
 	  rawtiles(rawtiles), posAndMaskToTile(posAndMaskToTile), type(type)
 	{
 	}

@@ -18,9 +18,9 @@ class btileset : public tileset_interface
 	std::vector<std::tr1::shared_ptr<tile_interface>> tiles;
 	std::string texmap;
 
-	const static std::array<tilecorner, 4> autotile12map;
-	const static std::array<tilecorner, 4> autotile94map;
-	const static std::array<getcornermaskfunc, 4> cornermaskfuncs;
+	const static std::tr1::array<tilecorner, 4> autotile12map;
+	const static std::tr1::array<tilecorner, 4> autotile94map;
+	const static std::tr1::array<getcornermaskfunc, 4> cornermaskfuncs;
 	
 	unsigned char getcornermask(unsigned char pos, unsigned char surround)
 	{
@@ -80,7 +80,7 @@ public:
 					rawtiles[v] = idx;
 				}
 
-				std::array<tilecorner, 4> posmap;
+				std::tr1::array<tilecorner, 4> posmap;
 				if (type == AUTOTILE12)
 				{
 					posmap = autotile12map;
@@ -100,7 +100,7 @@ public:
 		return texmap;
 	}
 
-	virtual std::tuple<int, boost::shared_array<quad>> getframeforid(int x, int y, std::function<tileid(int,int)> reversequery)
+	virtual std::tr1::tuple<int, boost::shared_array<quad>> getframeforid(int x, int y, std::tr1::function<tileid(int,int)> reversequery)
 	{
 		int id = reversequery(x,y).id;
 
@@ -140,7 +140,7 @@ public:
 			q.e[3].numtiles = info.numframes;
 			tile[0] = q;
 
-			return std::tuple<int, boost::shared_array<quad>>(1, tile);
+			return std::tr1::tuple<int, boost::shared_array<quad>>(1, tile);
 		}
 
 		boost::shared_array<quad> tile(new quad[4]);
@@ -165,7 +165,7 @@ public:
 		populatequad(info4, q4, 0, 0);
 		tile[3] = q4;
 
-		return std::tuple<int, boost::shared_array<quad>>(4, tile);
+		return std::tr1::tuple<int, boost::shared_array<quad>>(4, tile);
 
 	}
 };

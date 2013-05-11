@@ -30,9 +30,9 @@ public:
 			{
 				auto frame = tileset->getframeforid(tilex + x, tiley + y, [mapdesc](int x, int y){return mapdesc->getid(x,y);});
 
-				for (int i=0;i<std::get<0>(frame);i++)
+				for (int i=0;i<std::tr1::get<0>(frame);i++)
 				{
-					quads.push_back(std::get<1>(frame)[i]);
+					quads.push_back(std::tr1::get<1>(frame)[i]);
 				}
 
 			}

@@ -2,16 +2,27 @@ CLANGXX=clang++
 CXX=g++
 FLAGS=-g -std=gnu++0x
 SRC=`ls ../src/*.cpp`
+
 INC=`../../libs/sources/build/bin/sdl-config --cflags` -I../src/ -I../../libs/sources/boost/ -I../../libs/sources/build/include
 LIBS=`../../libs/sources/build/bin/sdl-config --libs` -L../../libs/sources/build/lib -lSDL_ttf -lfreetype -lSDL_image -lpng -lz -lX11 -lXmu -lXi -lGL -lGLU -lXext -lGLEW
 MACLIBS= -stdlib=libc++ -framework opengl
-OUTPUT=-o akari
+OUTPUT= akari
 
-all:
-	$(CXX) $(FLAGS) $(SRC) $(INC) $(LIBS) $(OUTPUT)
+PACKERSRC=../packer/main.cpp ../packer/pngfuncs.c
+PACKEROUTPUT=pack
 
-macos:
-	$(CLANGXX) $(FLAGS) $(SRC) $(INC) $(LIBS) $(MACLIBS) $(OUTPUT) 
+akari:
+	$(CXX) $(FLAGS) $(SRC) $(INC) $(LIBS) -o $(OUTPUT)
+	
+macosx:
+	$(CLANGXX) $(FLAGS) $(SRC) $(INC) $(LIBS) -o $(OUTPUT)
+
+packer:
+	$(CXX) $(FLAGS) $(PACKERSRC) $(INC) $(LIBS) -o $(PACKEROUTPUT)
+
+mm:
+	$(CXX) $(FLAGS) -MM $(SRC) $(INC)
 
 clean:
-	rm akari
+	rm $(OUTPUT)
+	rm $(PACKEROUTPUT)
