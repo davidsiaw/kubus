@@ -1,6 +1,7 @@
 #ifndef TILESET_INTERFACE_H
 #define TILESET_INTERFACE_H
 
+#include <tr1/functional>
 #include <tr1/tuple>
 #include <string>
 #include "tileid.h"
