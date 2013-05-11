@@ -8,7 +8,7 @@ class mobilecharacterset : public objectset_interface
 public:
 	virtual std::string gettexturemap()
 	{
-		return "rikkawalk.png";
+		return "dekomori.png";
 	}
 
 	virtual std::tr1::shared_ptr<mobilecharacter> createobject(int id)
