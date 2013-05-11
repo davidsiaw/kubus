@@ -18,8 +18,8 @@ public:
 		int y, 
 		unsigned int w, 
 		unsigned int h,
-		boost::shared_ptr<resources_interface> resources, 
-		boost::shared_ptr<mapdesc_interface> mapdesc)
+		std::tr1::shared_ptr<resources_interface> resources, 
+		std::tr1::shared_ptr<mapdesc_interface> mapdesc)
 	{
 		auto tileset = resources->gettileset(mapdesc->gettilesetname());
 		texturemap = resources->getimage(tileset->gettexturemap());

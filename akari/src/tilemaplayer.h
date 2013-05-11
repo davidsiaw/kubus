@@ -2,7 +2,7 @@
 #define TILEMAPLAYER_H
 
 #include "akari.h"
-#include "boost/shared_ptr.hpp"
+#include <tr1/memory>
 #include "boost/shared_array.hpp"
 
 #include "tilecomposition.h"
@@ -15,10 +15,10 @@
 class tilemaplayer
 {
 	int camerax,cameray;
-	matrix<boost::shared_ptr<vertexbuffer>, 3, 3> buffers;
-	boost::shared_ptr<resources_interface> resources;
-	boost::shared_ptr<mapdesc_interface> mapdesc;
-	boost::shared_ptr<texanimshader_interface> shader;
+	matrix<std::tr1::shared_ptr<vertexbuffer>, 3, 3> buffers;
+	std::tr1::shared_ptr<resources_interface> resources;
+	std::tr1::shared_ptr<mapdesc_interface> mapdesc;
+	std::tr1::shared_ptr<texanimshader_interface> shader;
 	int w,h;
 
 	int screenw;
@@ -32,13 +32,13 @@ class tilemaplayer
 
 	void prepbuffers()
 	{
-		log("anchorx %d, anchory %d", anchorx, anchory);
-		log("block matrix:\n");
-		log("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
-		log("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
-		log("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
+		xlog("anchorx %d, anchory %d", anchorx, anchory);
+		xlog("block matrix:\n");
+		xlog("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
+		xlog("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
+		xlog("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
 
-		boost::shared_ptr<tilecomposition> tc;
+		std::tr1::shared_ptr<tilecomposition> tc;
 
 		for (int x=0;x<buffers.getcolumns();x++)
 		for (int y=0;y<buffers.getrows();y++)
@@ -48,20 +48,20 @@ class tilemaplayer
 
 			if (!buffers(x,y))
 			{
-				tc = boost::shared_ptr<tilecomposition>(new tilecomposition(locationx, locationy, w+1, h+1, resources, mapdesc));
-				buffers(x, y) = boost::shared_ptr<vertexbuffer>(new vertexbuffer(shader, tc));
+				tc = std::tr1::shared_ptr<tilecomposition>(new tilecomposition(locationx, locationy, w+1, h+1, resources, mapdesc));
+				buffers(x, y) = std::tr1::shared_ptr<vertexbuffer>(new vertexbuffer(shader, tc));
 			}
 		}
 
-		log("block matrix:\n");
-		log("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
-		log("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
-		log("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
+		xlog("block matrix:\n");
+		xlog("%p\t%p\t%p\n",buffers(0,0).get(),buffers(1,0).get(),buffers(2,0).get());
+		xlog("%p\t%p\t%p\n",buffers(0,1).get(),buffers(1,1).get(),buffers(2,1).get());
+		xlog("%p\t%p\t%p\n",buffers(0,2).get(),buffers(1,2).get(),buffers(2,2).get());
 	}
 
 public:
 
-	tilemaplayer(boost::shared_ptr<texanimshader_interface> shader, boost::shared_ptr<resources_interface> resources,  boost::shared_ptr<mapdesc_interface> mapdesc, int width, int height)
+	tilemaplayer(std::tr1::shared_ptr<texanimshader_interface> shader, std::tr1::shared_ptr<resources_interface> resources,  std::tr1::shared_ptr<mapdesc_interface> mapdesc, int width, int height)
 		: camerax(0), cameray(0), mapdesc(mapdesc), shader(shader), resources(resources), anchorx(0), anchory(0)
 	{
 		// We keep 9 vertex buffers the size of the screen
@@ -107,26 +107,26 @@ public:
 		if (dx < -2*marginx)
 		{
 			anchorx += screenw;
-			buffers.shift(1,0,[](){return boost::shared_ptr<vertexbuffer>();});
+			buffers.shift(1,0,[](){return std::tr1::shared_ptr<vertexbuffer>();});
 			needToReprep = true;
 		}
 		else if (dx > 2*marginx)
 		{
 			anchorx -= screenw;
-			buffers.shift(-1,0,[](){return boost::shared_ptr<vertexbuffer>();});
+			buffers.shift(-1,0,[](){return std::tr1::shared_ptr<vertexbuffer>();});
 			needToReprep = true;
 		}
 
 		if (dy < -2*marginy)
 		{
 			anchory += screenh;
-			buffers.shift(0,1,[](){return boost::shared_ptr<vertexbuffer>();});
+			buffers.shift(0,1,[](){return std::tr1::shared_ptr<vertexbuffer>();});
 			needToReprep = true;
 		}
 		else if (dy > 2*marginy)
 		{
 			anchory -= screenh;
-			buffers.shift(0,-1,[](){return boost::shared_ptr<vertexbuffer>();});
+			buffers.shift(0,-1,[](){return std::tr1::shared_ptr<vertexbuffer>();});
 			needToReprep = true;
 		}
 
@@ -140,12 +140,12 @@ public:
 	void render(int tile)
 	{
 		// test rebuffer performance
-		/*buffers(0,0) = boost::shared_ptr<vertexbuffer>();
+		/*buffers(0,0) = std::tr1::shared_ptr<vertexbuffer>();
 		prepbuffers();*/
 
 		glEnable2D(camerax,cameray);
 
-		buffers.foreach([=](boost::shared_ptr<vertexbuffer> v)
+		buffers.foreach([=](std::tr1::shared_ptr<vertexbuffer> v)
 		{
 			if (v.get() != NULL)
 			{

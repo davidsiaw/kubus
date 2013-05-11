@@ -1,7 +1,7 @@
 #ifndef SCENE_INTERFACE
 #define SCENE_INTERFACE
 
-#include <sdl.h>
+#include <SDL.h>
 
 class scene_interface
 {

@@ -2,7 +2,7 @@
 #define OBJECTLAYER_H
 
 #include <vector>
-#include <boost/shared_ptr.hpp>
+#include <tr1/memory>
 
 #include "primitives.h"
 #include "vertexbuffer.h"
@@ -58,12 +58,12 @@ class objectlayer
 		}
 	};
 
-	boost::shared_ptr<vertexbuffer> vbuf;
-	boost::shared_ptr<resources_interface> res;
-	boost::shared_ptr<texanimshader_interface> shader;
-	boost::shared_ptr<objectset_interface> objects;
+	std::tr1::shared_ptr<vertexbuffer> vbuf;
+	std::tr1::shared_ptr<resources_interface> res;
+	std::tr1::shared_ptr<texanimshader_interface> shader;
+	std::tr1::shared_ptr<objectset_interface> objects;
 
-	std::vector<boost::shared_ptr<object_interface>> objectlist;
+	std::vector<std::tr1::shared_ptr<object_interface>> objectlist;
 	std::vector<quad> quads;
 	std::vector<int> freeids;
 
@@ -81,23 +81,23 @@ class objectlayer
 		{
 			freeids.push_back(quads.size());
 			quads.push_back(emptyquad);
-			objectlist.push_back(boost::shared_ptr<object_interface>());
+			objectlist.push_back(std::tr1::shared_ptr<object_interface>());
 		}
-		boost::shared_ptr<objectcomposition> composition(new objectcomposition(res->getimage(objects->gettexturemap()), quads));
-		vbuf = boost::shared_ptr<vertexbuffer>(new vertexbuffer(shader, composition));
+		std::tr1::shared_ptr<objectcomposition> composition(new objectcomposition(res->getimage(objects->gettexturemap()), quads));
+		vbuf = std::tr1::shared_ptr<vertexbuffer>(new vertexbuffer(shader, composition));
 	}
 
 public:
-	objectlayer(boost::shared_ptr<texanimshader_interface> shader, boost::shared_ptr<resources_interface> res, boost::shared_ptr<objectset_interface> objects, int screenw, int screenh) 
+	objectlayer(std::tr1::shared_ptr<texanimshader_interface> shader, std::tr1::shared_ptr<resources_interface> res, std::tr1::shared_ptr<objectset_interface> objects, int screenw, int screenh) 
 		: objects(objects), res(res), shader(shader), screenw(screenw), screenh(screenh), camerax(0), cameray(0)
 	{
 		memset(&emptyquad, 0, sizeof(quad));
 		increasequadspace(1);
 	}
 
-	void foreachobject(std::function<bool(boost::shared_ptr<object_interface>)> objects)
+	void foreachobject(std::function<bool(std::tr1::shared_ptr<object_interface>)> objects)
 	{
-		typedef std::vector<boost::shared_ptr<object_interface>>::iterator iterator;
+		typedef std::vector<std::tr1::shared_ptr<object_interface>>::iterator iterator;
 		for (iterator i = objectlist.begin(); i != objectlist.end(); i++)
 		{
 			if (!objects(*i))
@@ -107,7 +107,7 @@ public:
 		}
 	}
 
-	void addobject(boost::shared_ptr<object_interface> obj)
+	void addobject(std::tr1::shared_ptr<object_interface> obj)
 	{
 		if (obj->getid() != -1)
 		{
@@ -128,17 +128,17 @@ public:
 		obj->setid(id);
 	}
 
-	void removeobject(boost::shared_ptr<object_interface> obj)
+	void removeobject(std::tr1::shared_ptr<object_interface> obj)
 	{
 		int id = obj->getid();
 		obj->setid(-1);
 		freeids.push_back(id);
 		quads[id] = emptyquad;
 		vbuf->ChangeQuadAt(id, emptyquad);
-		objectlist[id] = boost::shared_ptr<object_interface>();
+		objectlist[id] = std::tr1::shared_ptr<object_interface>();
 	}
 
-	void updateobject(boost::shared_ptr<object_interface> obj)
+	void updateobject(std::tr1::shared_ptr<object_interface> obj)
 	{
 		vbuf->ChangeQuadAt(obj->getid(), obj->getcurrentquad());
 	}

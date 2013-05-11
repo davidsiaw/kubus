@@ -1,0 +1,12 @@
+language: cpp
+
+compiler:
+  - gcc
+
+before_install:
+  - sudo apt-get install libglu1-mesa-dev libgl1-mesa-dev libxmu-dev libxi-dev libxext-dev libx11-dev
+
+script:
+  - cd libs/sources; make
+  - cd ../..
+  - cd akari/build; make

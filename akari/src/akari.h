@@ -5,9 +5,9 @@
 
 // ==============================================================
 #ifdef _DEBUG
-#define log(x,...) printf(x,__VA_ARGS__)
+#define xlog(x,...) printf(x,__VA_ARGS__)
 #else // _DEBUG
-#define log(x,...)
+#define xlog(x,...)
 #endif // _DEBUG
 // ==============================================================
 

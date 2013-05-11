@@ -1,0 +1,24 @@
+[submodule "libs/sources/boost"]
+	path = libs/sources/boost
+	url = git://github.com/davidsiaw/boost.git
+[submodule "libs/sources/sdl"]
+	path = libs/sources/sdl
+	url = git://github.com/davidsiaw/sdl.git
+[submodule "libs/sources/zlib"]
+	path = libs/sources/zlib
+	url = git://github.com/davidsiaw/zlib.git
+[submodule "libs/sources/libpng"]
+	path = libs/sources/libpng
+	url = git://github.com/davidsiaw/libpng.git
+[submodule "libs/sources/freetype"]
+	path = libs/sources/freetype
+	url = git://github.com/davidsiaw/freetype.git
+[submodule "libs/sources/sdl_ttf"]
+	path = libs/sources/sdl_ttf
+	url = git://github.com/davidsiaw/sdl_ttf.git
+[submodule "libs/sources/sdl_image"]
+	path = libs/sources/sdl_image
+	url = git://github.com/davidsiaw/sdl_image.git
+[submodule "libs/sources/glew"]
+	path = libs/sources/glew
+	url = git://github.com/davidsiaw/glew.git

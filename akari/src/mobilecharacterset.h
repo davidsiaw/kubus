@@ -31,9 +31,10 @@ public:
 		return map;
 	}
 
-	virtual boost::shared_ptr<mobilecharacter> createobject(int id)
+	virtual std::tr1::shared_ptr<mobilecharacter> createobject(int id)
 	{
-		return boost::shared_ptr<mobilecharacter>(new mobilecharacter(charmapinfo[id]));
+
+		return std::tr1::shared_ptr<mobilecharacter>(new mobilecharacter(charmapinfo[id]));
 	}
 };
 

@@ -1,7 +1,7 @@
 #include "scenariobasedscene.h"
 
 
-scenariobasedscene::scenariobasedscene(boost::shared_ptr<scenario_interface> scenario)
+scenariobasedscene::scenariobasedscene(std::tr1::shared_ptr<scenario_interface> scenario)
 	: scenario(scenario)
 {
 }

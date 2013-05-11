@@ -1,10 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sdl.h>
+#include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include <GL/glew.h>
-#include <boost/shared_ptr.hpp>
+#include <iostream>
+#include <tr1/memory>
 #include "akari.h"
 
 #include "scene_interface.h"
@@ -18,14 +17,13 @@
 #include "btileset.h"
 #include "directoryresources.h"
 
-
 const char* title = "Dark Flame Master";
 int screenWidth = 800;
 int screenHeight = 600;
 SDL_Surface* screen;
 Uint32 currtime = 0;
 
-void run(boost::shared_ptr<scene_interface> scene)
+void run(std::tr1::shared_ptr<scene_interface> scene)
 {
 	currtime = SDL_GetTicks();
 	scene->init(screen);
@@ -55,29 +53,29 @@ void run(boost::shared_ptr<scene_interface> scene)
 
 int initialize()
 {
-	log("Initializing SDL\n");
+	xlog("Initializing SDL\n");
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {	
-		log("SDL_Init: %s\n", SDL_GetError());
+		xlog("SDL_Init: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
     }
 	
-	log("Initializing SDL_TTF\n");
+	xlog("Initializing SDL_TTF\n");
 	if(TTF_Init() == -1) {
-		log("TTF_Init: %s\n", TTF_GetError());
+		xlog("TTF_Init: %s\n", TTF_GetError());
 		return EXIT_FAILURE;
 	}
 	
-	log("Initializing Video\n");
+	xlog("Initializing Video\n");
     if((screen = SDL_SetVideoMode(screenWidth, screenHeight, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_OPENGL )) == NULL)
     {
-		log("SDL_Init: %s\n", SDL_GetError());
+		xlog("SDL_Init: %s\n", SDL_GetError());
 		return EXIT_FAILURE;
     }
 
 	SDL_WM_SetCaption(title, NULL);
 	
-	log("Initializing Glew\n");
+	xlog("Initializing Glew\n");
     glewInit();
 	Init3D(screenWidth, screenHeight);
 
@@ -108,18 +106,18 @@ class controller_interface
 class myscenario : public scenario_interface
 {
 
-	boost::shared_ptr<ordinarytexanimshader> shader;
-	boost::shared_ptr<font_interface> font;
-	boost::shared_ptr<tilemaplayer> tilelayer;
+	std::tr1::shared_ptr<ordinarytexanimshader> shader;
+	std::tr1::shared_ptr<font_interface> font;
+	std::tr1::shared_ptr<tilemaplayer> tilelayer;
 
-	boost::shared_ptr<objectset_interface> objectset;
+	std::tr1::shared_ptr<objectset_interface> objectset;
 
-	boost::shared_ptr<textlayer> campos;
-	boost::shared_ptr<objectlayer> objects;
+	std::tr1::shared_ptr<textlayer> campos;
+	std::tr1::shared_ptr<objectlayer> objects;
 
-	boost::shared_ptr<mobilecharacter> playerobject;
+	std::tr1::shared_ptr<mobilecharacter> playerobject;
 
-	boost::shared_ptr<mobilecharacter> addobject(int id)
+	std::tr1::shared_ptr<mobilecharacter> addobject(int id)
 	{
 		auto anotherobject = objectset->createobject(id);
 		objects->addobject(anotherobject);
@@ -128,11 +126,12 @@ class myscenario : public scenario_interface
 
 public:
 	myscenario(
-			boost::shared_ptr<resources_interface> resources, 
-			boost::shared_ptr<mapdesc_interface> mapdesc, 
-			boost::shared_ptr<font_interface> font,
-			boost::shared_ptr<objectset_interface> charmap) :
+			std::tr1::shared_ptr<resources_interface> resources, 
+			std::tr1::shared_ptr<mapdesc_interface> mapdesc, 
+			std::tr1::shared_ptr<font_interface> font,
+			std::tr1::shared_ptr<objectset_interface> charmap) :
 			
+
 		shader(new ordinarytexanimshader()), 
 		font(font),
 		tilelayer(new tilemaplayer(shader, resources, mapdesc,800,600)),
@@ -152,7 +151,7 @@ public:
 	{
 	}
 
-	virtual boost::shared_ptr<mobilecharacter> gethero()
+	virtual std::tr1::shared_ptr<mobilecharacter> gethero()
 	{
 		return playerobject;
 	}
@@ -206,7 +205,7 @@ public:
 		return false;
 	}
 
-	virtual void commandcharacter(boost::shared_ptr<mobilecharacter> character, objectdirection dir, characteraction act)
+	virtual void commandcharacter(std::tr1::shared_ptr<mobilecharacter> character, objectdirection dir, characteraction act)
 	{
 		if ((SDL_GetTicks() - character->getlastupdated()) < 30)
 		{
@@ -240,7 +239,7 @@ public:
 		{
 			int newx = character->getx() + dx;
 			int newy = character->gety() + dy;
-			objects->foreachobject([&](boost::shared_ptr<object_interface> obj) -> bool
+			objects->foreachobject([&](std::tr1::shared_ptr<object_interface> obj) -> bool
 			{
 				mobilecharacter* o = (mobilecharacter*)obj.get();
 				int distx = newx - o->getx();
@@ -270,17 +269,19 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	boost::shared_ptr<directoryresources> dirres(new directoryresources("../res/"));
-	boost::shared_ptr<mapdesc_interface> mapd(new mymapdesc());
-	boost::shared_ptr<font_interface> font = dirres->getfont("myfont");
-	boost::shared_ptr<objectset_interface> charmap = dirres->getcharmap("maincm");
 
-	boost::shared_ptr<scenario_interface> scenario(new myscenario(dirres, mapd, font, charmap));
-	boost::shared_ptr<scenariobasedscene> scene(new scenariobasedscene(scenario));
+	std::tr1::shared_ptr<directoryresources> dirres(new directoryresources("../res/"));
+	std::tr1::shared_ptr<mapdesc_interface> mapd(new mymapdesc());
+	std::tr1::shared_ptr<font_interface> font = dirres->getfont("myfont");
+	std::tr1::shared_ptr<objectset_interface> charmap = dirres->getcharmap("maincm");
+
+	std::tr1::shared_ptr<scenario_interface> scenario(new myscenario(dirres, mapd, font, charmap));
+	std::tr1::shared_ptr<scenariobasedscene> scene(new scenariobasedscene(scenario));
+
 	run(scene);
 
 
-	boost::shared_ptr<tilemapscene> tms(new tilemapscene(dirres, mapd, font));
+	std::tr1::shared_ptr<tilemapscene> tms(new tilemapscene(dirres, mapd, font));
 	run(tms);
 
 	return EXIT_SUCCESS;

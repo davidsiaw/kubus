@@ -1,7 +1,7 @@
 #ifndef VERTEXBUFFER_H
 #define VERTEXBUFFER_H
 
-#include "boost/shared_ptr.hpp"
+#include <tr1/memory>
 #include "GL/glew.h"
 #include "primitives.h"
 #include "composition_interface.h"
@@ -23,10 +23,10 @@ class vertexbuffer
 	bool uses_texture;
 	GLuint texture;
 
-	boost::shared_ptr<texanimshader_interface> shader;
+	std::tr1::shared_ptr<texanimshader_interface> shader;
 
 public:
-	vertexbuffer(boost::shared_ptr<texanimshader_interface> shader, boost::shared_ptr<composition_interface> composition)
+	vertexbuffer(std::tr1::shared_ptr<texanimshader_interface> shader, std::tr1::shared_ptr<composition_interface> composition)
 	{
 		buffer_size = composition->BufferSizeInBytes();
 		type = composition->PrimitiveType();
