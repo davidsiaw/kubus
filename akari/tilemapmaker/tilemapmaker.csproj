@@ -123,16 +123,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\VS\Libs\BlueBlocks\BlueBlocksLib\BlueBlocksLib.csproj">
+    <ProjectReference Include="..\..\libs\sources\BlueBlocks\BlueBlocksLib\BlueBlocksLib.csproj">
       <Project>{3E610D1E-838A-4EAB-80AE-CA4E78C2D83A}</Project>
       <Name>BlueBlocksLib</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\build\Debug\libvoronoidll.dll">
-      <Link>libvoronoidll.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,7 +1,7 @@
 #ifndef AUTOTILE_H
 #define AUTOTILE_H
 
-#include <tr1/array>
+#include <boost/tr1/array.hpp>
 #include <boost/shared_array.hpp>
 #include "tile_interface.h"
 

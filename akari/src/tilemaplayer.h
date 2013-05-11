@@ -2,8 +2,8 @@
 #define TILEMAPLAYER_H
 
 #include "akari.h"
-#include <tr1/memory>
-#include "boost/shared_array.hpp"
+#include <boost/tr1/memory.hpp>
+#include <boost/shared_array.hpp>
 
 #include "tilecomposition.h"
 #include "resources_interface.h"

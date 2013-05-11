@@ -2,7 +2,7 @@
 #define TEXTLAYER_H
 
 #include <vector>
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 #include "font_interface.h"
 #include "vertexbuffer.h"
 #include "composition_interface.h"

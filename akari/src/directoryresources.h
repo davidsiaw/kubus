@@ -65,7 +65,19 @@ public:
 	{
 		return charmaps.get(directory + identifier, [&]()->std::tr1::shared_ptr<objectset_interface>
 		{
-			return std::tr1::shared_ptr<objectset_interface>(new mobilecharacterset(directory + identifier));
+			std::vector<charmapinformation> charmapinfo;
+			FILE* fp = fopen((directory + identifier + ".charmap").c_str(), "rb");
+			int numcharacters;
+			fread(&numcharacters, sizeof(int), 1, fp);
+			for (int i=0; i<numcharacters; i++)
+			{
+				charmapinformation cmi;
+				fread(&cmi, sizeof(charmapinformation), 1, fp);
+				charmapinfo.push_back(cmi);
+			}
+			fclose(fp);
+
+			return std::tr1::shared_ptr<objectset_interface>(new mobilecharacterset(directory + identifier, charmapinfo));
 		});
 	}
 };

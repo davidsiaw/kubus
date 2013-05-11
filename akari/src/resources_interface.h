@@ -2,7 +2,7 @@
 #define RESOURCES_INTERFACE_H
 
 #include <string>
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 #include "tileset_interface.h"
 #include "mapdesc_interface.h"
 #include "font_interface.h"

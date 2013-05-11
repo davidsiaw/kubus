@@ -22,3 +22,9 @@
 [submodule "libs/sources/glew"]
 	path = libs/sources/glew
 	url = git://github.com/davidsiaw/glew.git
+[submodule "libs/sources/blueblocks"]
+	path = libs/sources/blueblocks
+	url = git://github.com/davidsiaw/blueblocks.git
+[submodule "libs/sources/lua"]
+	path = libs/sources/lua
+	url = git://github.com/davidsiaw/lua.git

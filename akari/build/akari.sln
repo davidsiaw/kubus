@@ -3,27 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "akari", "kubus.vcxproj", "{B1D92643-3235-44EE-8491-95642285AD83}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlibvc", "..\..\libs\sources\zlib-1.2.5\contrib\vstudio\vc10\zlibvc.vcxproj", "{8FD826F8-3739-44E6-8CC8-997122E53B8D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlibvc", "..\..\libs\sources\zlib\contrib\vstudio\vc10\zlibvc.vcxproj", "{8FD826F8-3739-44E6-8CC8-997122E53B8D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL", "..\..\libs\sources\SDL-1.2.14\VisualC\SDL\SDL.vcxproj", "{81CE8DAF-EBB2-4761-8E45-B71ABCCA8C68}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL", "..\..\libs\sources\sdl\VisualC\SDL\SDL.vcxproj", "{81CE8DAF-EBB2-4761-8E45-B71ABCCA8C68}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDLmain", "..\..\libs\sources\SDL-1.2.14\VisualC\SDLmain\SDLmain.vcxproj", "{DA956FD3-E142-46F2-9DD5-C78BEBB56B7A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDLmain", "..\..\libs\sources\sdl\VisualC\SDLmain\SDLmain.vcxproj", "{DA956FD3-E142-46F2-9DD5-C78BEBB56B7A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "..\..\libs\sources\glew-1.7.0\build\vc6\glew_static.vcxproj", "{A5633B76-6BD2-7748-7C61-990249C78787}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glew_static", "..\..\libs\sources\glew\build\vc6\glew_static.vcxproj", "{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "..\..\libs\sources\libpng-1.5.5\projects\visualc71\libpng.vcxproj", "{867AC197-332E-BE97-297D-2D5EE95ADD6D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "..\..\libs\sources\libpng\projects\visualc71\libpng.vcxproj", "{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL_image", "..\..\libs\sources\SDL_image-1.2.10\VisualC\SDL_image.vcxproj", "{2BD5534E-00E2-4BEA-AC96-D9A92EA24696}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL_image", "..\..\libs\sources\SDL_image\VisualC\SDL_image.vcxproj", "{2BD5534E-00E2-4BEA-AC96-D9A92EA24696}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL_ttf", "..\..\libs\sources\SDL_ttf-2.0.10\VisualC\SDL_ttf.vcxproj", "{DDDBD07D-DC76-4AF6-8D02-3E2DEB6EE255}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL_ttf", "..\..\libs\sources\sdl_ttf\VisualC\SDL_ttf.vcxproj", "{DDDBD07D-DC76-4AF6-8D02-3E2DEB6EE255}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\..\libs\sources\freetype-2.1.10\builds\win32\visualc\freetype.vcxproj", "{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\..\libs\sources\freetype\builds\win32\visualc\freetype.vcxproj", "{D0087BEB-3E7B-4004-BD4A-E4D071CF8D92}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "..\..\libs\sources\lua-5.2.0\lua.vcxproj", "{7CC1250B-0680-4BCC-AAC8-92F5CF058816}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "..\..\libs\sources\lua\lua.vcxproj", "{7CC1250B-0680-4BCC-AAC8-92F5CF058816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tilemapmaker", "..\tilemapmaker\tilemapmaker.csproj", "{0A7ACAB9-7FA0-4675-B4A8-D86FF0929860}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlueBlocksLib", "..\..\..\VS\Libs\BlueBlocks\BlueBlocksLib\BlueBlocksLib.csproj", "{3E610D1E-838A-4EAB-80AE-CA4E78C2D83A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlueBlocksLib", "..\..\libs\sources\BlueBlocks\BlueBlocksLib\BlueBlocksLib.csproj", "{3E610D1E-838A-4EAB-80AE-CA4E78C2D83A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,22 +65,22 @@ Global
 		{DA956FD3-E142-46F2-9DD5-C78BEBB56B7A}.Release|Win32.Build.0 = Release|Win32
 		{DA956FD3-E142-46F2-9DD5-C78BEBB56B7A}.Release|x64.ActiveCfg = Release|x64
 		{DA956FD3-E142-46F2-9DD5-C78BEBB56B7A}.Release|x64.Build.0 = Release|x64
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Debug|Win32.Build.0 = Debug|Win32
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Debug|x64.ActiveCfg = Debug|x64
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Debug|x64.Build.0 = Debug|x64
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Release|Win32.ActiveCfg = Release|Win32
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Release|Win32.Build.0 = Release|Win32
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Release|x64.ActiveCfg = Release|x64
-		{A5633B76-6BD2-7748-7C61-990249C78787}.Release|x64.Build.0 = Release|x64
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Debug|Win32.ActiveCfg = LIB Debug|Win32
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Debug|Win32.Build.0 = LIB Debug|Win32
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Debug|x64.ActiveCfg = LIB Debug|x64
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Debug|x64.Build.0 = LIB Debug|x64
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Release|Win32.ActiveCfg = LIB Release|Win32
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Release|Win32.Build.0 = LIB Release|Win32
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Release|x64.ActiveCfg = LIB Release|x64
-		{867AC197-332E-BE97-297D-2D5EE95ADD6D}.Release|x64.Build.0 = LIB Release|x64
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Debug|Win32.Build.0 = Debug|Win32
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Debug|x64.ActiveCfg = Debug|x64
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Debug|x64.Build.0 = Debug|x64
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Release|Win32.ActiveCfg = Release|Win32
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Release|Win32.Build.0 = Release|Win32
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Release|x64.ActiveCfg = Release|x64
+		{FF5B1F1B-83B1-3746-EF33-5200FEDB926A}.Release|x64.Build.0 = Release|x64
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Debug|Win32.ActiveCfg = LIB Debug|Win32
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Debug|Win32.Build.0 = LIB Debug|Win32
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Debug|x64.ActiveCfg = LIB Debug|x64
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Debug|x64.Build.0 = LIB Debug|x64
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Release|Win32.ActiveCfg = LIB Release|Win32
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Release|Win32.Build.0 = LIB Release|Win32
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Release|x64.ActiveCfg = LIB Release|x64
+		{772F1B71-B00A-5A17-C74A-4A5E20FB3EA3}.Release|x64.Build.0 = LIB Release|x64
 		{2BD5534E-00E2-4BEA-AC96-D9A92EA24696}.Debug|Win32.ActiveCfg = Debug|Win32
 		{2BD5534E-00E2-4BEA-AC96-D9A92EA24696}.Debug|Win32.Build.0 = Debug|Win32
 		{2BD5534E-00E2-4BEA-AC96-D9A92EA24696}.Debug|x64.ActiveCfg = Debug|x64

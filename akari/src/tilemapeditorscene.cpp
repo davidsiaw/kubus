@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 #include "boost/shared_array.hpp"
 #include "textlayer.h"
 #include "tilemapeditorscene.h"

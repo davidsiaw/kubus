@@ -3,7 +3,7 @@
 #include <SDL_ttf.h>
 #include <GL/glew.h>
 #include <iostream>
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 #include "akari.h"
 
 #include "scene_interface.h"

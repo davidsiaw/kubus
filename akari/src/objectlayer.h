@@ -2,7 +2,7 @@
 #define OBJECTLAYER_H
 
 #include <vector>
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 
 #include "primitives.h"
 #include "vertexbuffer.h"

@@ -10,20 +10,8 @@ class mobilecharacterset : public objectset_interface
 	std::vector<charmapinformation> charmapinfo;
 public:
 
-	mobilecharacterset (std::string map)
+	mobilecharacterset (std::string map, std::vector<charmapinformation> charmapinfo) : map(map + ".png"), charmapinfo(charmapinfo)
 	{
-		this->map = map + ".png";
-		FILE* fp = fopen((map + ".charmap").c_str(), "rb");
-		std::cout << "meow" << map << std::endl;
-		int numcharacters;
-		fread(&numcharacters, sizeof(int), 1, fp);
-		for (int i=0; i<numcharacters; i++)
-		{
-			charmapinformation cmi;
-			fread(&cmi, sizeof(charmapinformation), 1, fp);
-			charmapinfo.push_back(cmi);
-		}
-		fclose(fp);
 	}
 	
 	virtual std::string gettexturemap()

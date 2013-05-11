@@ -1,7 +1,7 @@
 #ifndef TILEMAPSCENE_H
 #define TILEMAPSCENE_H
 
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 
 #include "scene_interface.h"
 #include "resources_interface.h"

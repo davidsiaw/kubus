@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 
-#include <tr1/memory>
+#include <boost/tr1/memory.hpp>
 #include "boost/shared_array.hpp"
 #include "textlayer.h"
 #include "tilemapscene.h"
@@ -11,7 +11,7 @@ tilemapscene::tilemapscene(std::tr1::shared_ptr<resources_interface> resources, 
 	font(font),
 	tilelayer(new tilemaplayer(shader, resources, mapdesc,800,600)),
 	campos(new textlayer(shader, resources, font)),
-	objectset(new mobilecharacterset("rikkawalk.png")),
+	objectset(resources->getcharmap("maincm")),
 	objects(new objectlayer(shader, resources, objectset, 800, 600)),
 	playerobject(objectset->createobject(1)),
 	otherobject(objectset->createobject(1))
