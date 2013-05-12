@@ -64,7 +64,9 @@ namespace tilemapmaker
 
         private void OpenFile(string filename)
         {
-            var img = Image.FromFile(filename);
+            var img = new Bitmap(filename);
+            img.SetResolution(96, 96);
+
             string name = Path.GetFileNameWithoutExtension(filename);
             tc_topRight.TabPages.Add(name, name);
 
